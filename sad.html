@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Horas Complementares - UFBA</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 300;
+        }
+
+        .subtitle {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            padding: 30px;
+        }
+
+        .form-section {
+            background: #f8f9ff;
+            padding: 25px;
+            border-radius: 15px;
+            border-left: 5px solid #a8b5ff;
+        }
+
+        .results-section {
+            background: #fff5f5;
+            padding: 25px;
+            border-radius: 15px;
+            border-left: 5px solid #ffb3b3;
+        }
+
+        h2 {
+            color: #5a6acf;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #4a5568;
+            font-weight: 500;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+            background: white;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #a8b5ff;
+            box-shadow: 0 0 0 3px rgba(168, 181, 255, 0.1);
+        }
+
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+            margin-right: 10px;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .activity-item {
+            background: white;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 10px;
+            border-left: 4px solid #a8b5ff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .activity-header {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .activity-title {
+            font-weight: 600;
+            color: #2d3748;
+            flex-grow: 1;
+        }
+
+        .hours-badge {
+            background: #a8b5ff;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 0.85em;
+            font-weight: 500;
+        }
+
+        .remove-btn {
+            background: #ff6b6b;
+            padding: 5px 10px;
+            font-size: 12px;
+            margin-left: 10px;
+        }
+
+        .progress-section {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f0fff4;
+            border-radius: 15px;
+            border-left: 5px solid #68d391;
+        }
+
+        .progress-bar {
+            background: #e2e8f0;
+            height: 20px;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #68d391 0%, #38b2ac 100%);
+            transition: width 0.3s ease;
+            border-radius: 10px;
+        }
+
+        .category-progress {
+            margin: 15px 0;
+        }
+
+        .category-name {
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 5px;
+        }
+
+        .suggestions {
+            background: #fffbeb;
+            padding: 20px;
+            border-radius: 15px;
+            border-left: 5px solid #f6ad55;
+            margin-top: 20px;
+        }
+
+        .suggestion-item {
+            padding: 10px;
+            margin: 8px 0;
+            background: white;
+            border-radius: 8px;
+            border-left: 3px solid #f6ad55;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Sistema de Horas Complementares</h1>
+            <p class="subtitle">Ciência da Computação - UFBA</p>
+        </header>
+
+        <div class="main-content">
+            <div class="form-section">
+                <h2>📝 Adicionar Atividade</h2>
+                <form id="activityForm">
+                    <div class="form-group">
+                        <label for="activityType">Tipo de Atividade:</label>
+                        <select id="activityType" required>
+                            <option value="">Selecione uma atividade...</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="hours">Horas Realizadas:</label>
+                        <input type="number" id="hours" min="1" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="description">Descrição (opcional):</label>
+                        <textarea id="description" rows="3" placeholder="Descreva brevemente a atividade..."></textarea>
+                    </div>
+
+                    <button type="submit">Adicionar Atividade</button>
+                    <button type="button" onclick="clearAll()">Limpar Tudo</button>
+                </form>
+            </div>
+
+            <div class="results-section">
+                <h2>📊 Suas Atividades</h2>
+                <div id="activities"></div>
+
+                <div class="suggestions" id="suggestions" style="display: none;">
+                    <h3>💡 Sugestões de Aproveitamento</h3>
+                    <div id="suggestionsList"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="progress-section">
+            <h2>📈 Progresso das Horas Complementares</h2>
+            <div id="progressBars"></div>
+        </div>
+    </div>
+
+    <script>
+        // Base de dados das atividades baseada na resolução
+        const atividades = {
+            // Categoria 1 - Extensão (330h)
+            "accs": {
+                nome: "ACCS - Ação Curricular em Comunidade e Sociedade",
+                categoria: "extensao",
+                maxHoras: 330,
+                comprovacao: "Comprovante contendo a carga horária cumprida"
+            },
+            "estagio": {
+                nome: "Estágio Supervisionado",
+                categoria: "extensao",
+                maxHoras: 100,
+                comprovacao: "Plano de estágio e relatório de conclusão"
+            },
+            "programa_extensao": {
+                nome: "Programa de Extensão",
+                categoria: "extensao",
+                maxHoras: 120,
+                comprovacao: "Comprovante de participação registrado no SIATEX-UFBA"
+            },
+            "projeto_extensao": {
+                nome: "Projeto de Extensão",
+                categoria: "extensao",
+                maxHoras: 120,
+                comprovacao: "Comprovante de participação registrado no SIATEX-UFBA"
+            },
+            "curso_extensao": {
+                nome: "Curso de Extensão (ministrante/monitor)",
+                categoria: "extensao",
+                maxHoras: 120,
+                comprovacao: "Comprovante como ministrante, monitor ou facilitador"
+            },
+            "evento_extensao": {
+                nome: "Evento Acadêmico-Científico de Extensão",
+                categoria: "extensao",
+                maxHoras: 100,
+                comprovacao: "Comprovante de participação com intervenção na comunidade"
+            },
+            "publicacao_extensao": {
+                nome: "Publicação de Extensão",
+                categoria: "extensao",
+                maxHoras: 100,
+                comprovacao: "Comprovante de publicação com caráter de difusão"
+            },
+            "liga_academica": {
+                nome: "Liga Acadêmica",
+                categoria: "extensao",
+                maxHoras: 120,
+                comprovacao: "Comprovante de participação com intervenção na comunidade"
+            },
+            "empresa_junior": {
+                nome: "Empresa Júnior",
+                categoria: "extensao",
+                maxHoras: 120,
+                comprovacao: "Comprovante como membro efetivo com intervenção na comunidade"
+            },
+
+            // Categoria 2a - Ensino (30h)
+            "monitoria": {
+                nome: "Monitoria",
+                categoria: "ensino",
+                maxHoras: 30,
+                comprovacao: "Certificado com registro de data e carga horária mínima de 20h"
+            },
+            "pet": {
+                nome: "Programa de Educação Tutorial (PET)",
+                categoria: "ensino",
+                maxHoras: 30,
+                comprovacao: "Certificado com registro de data e carga horária mínima de 20h"
+            },
+            "grupo_estudo": {
+                nome: "Grupo de Estudo",
+                categoria: "ensino",
+                maxHoras: 30,
+                comprovacao: "Certificado com registro de data e carga horária mínima de 20h"
+            },
+
+            // Categoria 2b - Pesquisa (30h)
+            "iniciacao_cientifica": {
+                nome: "Iniciação Científica",
+                categoria: "pesquisa",
+                maxHoras: 30,
+                comprovacao: "Certificado com registro de data e carga horária mínima de 20h"
+            },
+            "apresentacao_trabalho": {
+                nome: "Apresentação de Trabalho Científico",
+                categoria: "pesquisa",
+                maxHoras: 30,
+                comprovacao: "Comprovante de apresentação"
+            },
+            "publicacao_periodico": {
+                nome: "Publicação em Periódico",
+                categoria: "pesquisa",
+                maxHoras: 30,
+                comprovacao: "Publicação do artigo"
+            },
+            "publicacao_conferencia": {
+                nome: "Publicação em Conferência",
+                categoria: "pesquisa",
+                maxHoras: 30,
+                comprovacao: "Publicação do artigo"
+            },
+
+            // Categoria 2c - Vivência Profissional (30h)
+            "gestao_redes": {
+                nome: "Gestão de Redes Acadêmicas",
+                categoria: "vivencia",
+                maxHoras: 30,
+                comprovacao: "Relatório de professor responsável"
+            },
+            "certificacao_tech": {
+                nome: "Certificação Tecnológica",
+                categoria: "vivencia",
+                maxHoras: 30,
+                comprovacao: "Certificado emitido por instituição reconhecida"
+            },
+            "treinamento_prof": {
+                nome: "Treinamento Profissional",
+                categoria: "vivencia",
+                maxHoras: 30,
+                comprovacao: "Certificado com conteúdo, data e carga horária"
+            },
+            "competicao_academica": {
+                nome: "Competição Acadêmica (GRUPRO)",
+                categoria: "vivencia",
+                maxHoras: 60,
+                comprovacao: "Certificado de participação"
+            },
+
+            // Categoria 2d - Eventos Técnicos (30h)
+            "evento_tecnico": {
+                nome: "Congresso/Seminário/Workshop",
+                categoria: "eventos",
+                maxHoras: 30,
+                comprovacao: "Certificado de participação"
+            },
+            "sociedade_cientifica": {
+                nome: "Associação em Sociedade Científica",
+                categoria: "eventos",
+                maxHoras: 10,
+                comprovacao: "Carteira de sócio ou declaração"
+            },
+
+            // Categoria 2e - Intervenção Organizacional (30h)
+            "organizacao_evento": {
+                nome: "Organização de Evento",
+                categoria: "organizacional",
+                maxHoras: 30,
+                comprovacao: "Certificado de participação na organização"
+            },
+            "ministrante": {
+                nome: "Ministrante de Curso",
+                categoria: "organizacional",
+                maxHoras: 30,
+                comprovacao: "Certificado ou declaração"
+            },
+            "solucao_tech": {
+                nome: "Desenvolvimento de Solução Tecnológica",
+                categoria: "organizacional",
+                maxHoras: 30,
+                comprovacao: "Certificado de registro ou autoria"
+            },
+
+            // Categoria 2f - Representação Estudantil (30h)
+            "representacao_discente": {
+                nome: "Representação Discente (CA/DA/DCE)",
+                categoria: "representacao",
+                maxHoras: 30,
+                comprovacao: "Ata de posse e declaração de cumprimento"
+            },
+
+            // Categoria 2g - Formação Interdisciplinar (30h)
+            "curso_idioma": {
+                nome: "Curso de Idiomas (nível intermediário+)",
+                categoria: "interdisciplinar",
+                maxHoras: 30,
+                comprovacao: "Certificado com data e carga horária"
+            },
+            "disciplina_externa": {
+                nome: "Disciplina fora da Matriz Curricular",
+                categoria: "interdisciplinar",
+                maxHoras: 30,
+                comprovacao: "Registro no histórico escolar"
+            },
+
+            // Categoria 2h - Outros (20h)
+            "atividade_fisica": {
+                nome: "Atividades Físicas/Esportivas",
+                categoria: "outros",
+                maxHoras: 20,
+                comprovacao: "Certificado da instituição responsável"
+            },
+            "atividade_cultural": {
+                nome: "Atividades Culturais",
+                categoria: "outros",
+                maxHoras: 20,
+                comprovacao: "Certificado com carga mínima de 40h"
+            },
+            "doacao_sangue": {
+                nome: "Doação de Sangue",
+                categoria: "outros",
+                maxHoras: 10,
+                comprovacao: "Atestado de doação (máximo 3 doações)"
+            }
+        };
+
+        const limitesCategorias = {
+            "extensao": 330,
+            "ensino": 30,
+            "pesquisa": 30,
+            "vivencia": 30,
+            "eventos": 30,
+            "organizacional": 30,
+            "representacao": 30,
+            "interdisciplinar": 30,
+            "outros": 20
+        };
+
+        const nomesCategorias = {
+            "extensao": "Extensão",
+            "ensino": "Ensino",
+            "pesquisa": "Pesquisa",
+            "vivencia": "Vivência Profissional",
+            "eventos": "Eventos Técnicos",
+            "organizacional": "Intervenção Organizacional",
+            "representacao": "Representação Estudantil",
+            "interdisciplinar": "Formação Interdisciplinar",
+            "outros": "Outros"
+        };
+
+        let atividadesRealizadas = [];
+
+        // Inicializar
+        function init() {
+            populateActivitySelect();
+            updateDisplay();
+        }
+
+        function populateActivitySelect() {
+            const select = document.getElementById('activityType');
+            
+            // Agrupar por categoria
+            const categorias = {};
+            Object.keys(atividades).forEach(key => {
+                const atividade = atividades[key];
+                if (!categorias[atividade.categoria]) {
+                    categorias[atividade.categoria] = [];
+                }
+                categorias[atividade.categoria].push({key, ...atividade});
+            });
+
+            // Adicionar options agrupados
+            Object.keys(categorias).forEach(categoria => {
+                const optgroup = document.createElement('optgroup');
+                optgroup.label = nomesCategorias[categoria];
+                
+                categorias[categoria].forEach(atividade => {
+                    const option = document.createElement('option');
+                    option.value = atividade.key;
+                    option.textContent = atividade.nome;
+                    optgroup.appendChild(option);
+                });
+                
+                select.appendChild(optgroup);
+            });
+        }
+
+        document.getElementById('activityForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const activityType = document.getElementById('activityType').value;
+            const hours = parseInt(document.getElementById('hours').value);
+            const description = document.getElementById('description').value;
+
+            if (!activityType || !hours) return;
+
+            const atividade = atividades[activityType];
+            const newActivity = {
+                id: Date.now(),
+                tipo: activityType,
+                nome: atividade.nome,
+                categoria: atividade.categoria,
+                horas: Math.min(hours, atividade.maxHoras),
+                descricao: description,
+                comprovacao: atividade.comprovacao
+            };
+
+            atividadesRealizadas.push(newActivity);
+            
+            // Limpar formulário
+            document.getElementById('activityForm').reset();
+            
+            updateDisplay();
+        });
+
+        function removeActivity(id) {
+            atividadesRealizadas = atividadesRealizadas.filter(a => a.id !== id);
+            updateDisplay();
+        }
+
+        function clearAll() {
+            atividadesRealizadas = [];
+            updateDisplay();
+        }
+
+        function updateDisplay() {
+            displayActivities();
+            displayProgress();
+            displaySuggestions();
+        }
+
+        function displayActivities() {
+            const container = document.getElementById('activities');
+            
+            if (atividadesRealizadas.length === 0) {
+                container.innerHTML = '<p style="color: #718096; font-style: italic;">Nenhuma atividade adicionada ainda.</p>';
+                return;
+            }
+
+            container.innerHTML = atividadesRealizadas.map(atividade => `
+                <div class="activity-item">
+                    <div class="activity-header">
+                        <div class="activity-title">${atividade.nome}</div>
+                        <span class="hours-badge">${atividade.horas}h</span>
+                        <button class="remove-btn" onclick="removeActivity(${atividade.id})">×</button>
+                    </div>
+                    <div style="font-size: 0.9em; color: #718096;">
+                        <strong>Categoria:</strong> ${nomesCategorias[atividade.categoria]}
+                    </div>
+                    ${atividade.descricao ? `<div style="font-size: 0.9em; color: #4a5568; margin-top: 5px;"><strong>Descrição:</strong> ${atividade.descricao}</div>` : ''}
+                    <div style="font-size: 0.85em; color: #a0aec0; margin-top: 8px;">
+                        <strong>Comprovação:</strong> ${atividade.comprovacao}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function displayProgress() {
+            const container = document.getElementById('progressBars');
+            const horasPorCategoria = {};
+            
+            // Inicializar com zeros
+            Object.keys(limitesCategorias).forEach(categoria => {
+                horasPorCategoria[categoria] = 0;
+            });
+            
+            // Somar horas por categoria
+            atividadesRealizadas.forEach(atividade => {
+                horasPorCategoria[atividade.categoria] += atividade.horas;
+            });
+
+            // Calcular totais
+            const totalExtensao = horasPorCategoria.extensao;
+            const totalOutras = Object.keys(horasPorCategoria)
+                .filter(cat => cat !== 'extensao')
+                .reduce((sum, cat) => sum + horasPorCategoria[cat], 0);
+            const totalGeral = totalExtensao + totalOutras;
+
+            container.innerHTML = `
+                <div class="category-progress">
+                    <div class="category-name">Total Geral: ${totalGeral}/430h (${Math.round(totalGeral/430*100)}%)</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: ${Math.min(totalGeral/430*100, 100)}%"></div>
+                    </div>
+                </div>
+
+                <div class="category-progress">
+                    <div class="category-name">Extensão: ${totalExtensao}/330h (${Math.round(totalExtensao/330*100)}%)</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: ${Math.min(totalExtensao/330*100, 100)}%"></div>
+                    </div>
+                </div>
+
+                <div class="category-progress">
+                    <div class="category-name">Outras Atividades: ${totalOutras}/100h (${Math.round(totalOutras/100*100)}%)</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: ${Math.min(totalOutras/100*100, 100)}%"></div>
+                    </div>
+                </div>
+
+                ${Object.keys(limitesCategorias).filter(cat => cat !== 'extensao').map(categoria => {
+                    const horas = horasPorCategoria[categoria];
+                    const limite = limitesCategorias[categoria];
+                    const percentage = Math.round(horas/limite*100);
+                    return `
+                        <div class="category-progress">
+                            <div class="category-name">${nomesCategorias[categoria]}: ${horas}/${limite}h (${percentage}%)</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: ${Math.min(percentage, 100)}%"></div>
+                            </div>
+                        </div>
+                    `;
+                }).join('')}
+            `;
+        }
+
+        function displaySuggestions() {
+            const container = document.getElementById('suggestions');
+            const suggestionsList = document.getElementById('suggestionsList');
+            
+            if (atividadesRealizadas.length === 0) {
+                container.style.display = 'none';
+                return;
+            }
+
+            container.style.display = 'block';
+            
+            // Calcular horas por categoria
+            const horasPorCategoria = {};
+            Object.keys(limitesCategorias).forEach(categoria => {
+                horasPorCategoria[categoria] = 0;
+            });
+            
+            atividadesRealizadas.forEach(atividade => {
+                horasPorCategoria[atividade.categoria] += atividade.horas;
+            });
+
+            const totalExtensao = horasPorCategoria.extensao;
+            const totalOutras = Object.keys(horasPorCategoria)
+                .filter(cat => cat !== 'extensao')
+                .reduce((sum, cat) => sum + horasPorCategoria[cat], 0);
+
+            let suggestions = [];
+
+            // Sugestões para extensão
+            if (totalExtensao < 330) {
+                suggestions.push(`Você ainda precisa de ${330 - totalExtensao}h em atividades de <strong>Extensão</strong>. Considere: ACCS, projetos de extensão, estágios ou ligas acadêmicas.`);
+            }
+
+            // Sugestões para outras atividades
+            if (totalOutras < 100) {
+                // Encontrar categoria com menos horas (exceto extensão)
+                const categoriasOrdenadas = Object.keys(horasPorCategoria)
+                    .filter(cat => cat !== 'extensao')
+                    .sort((a, b) => horasPorCategoria[a] - horasPorCategoria[b]);
+                
+                const categoriaMenosHoras = categoriasOrdenadas[0];
+                const horasRestantes = 100 - totalOutras;
+                
+                suggestions.push(`Você ainda precisa de ${horasRestantes}h em <strong>Outras Atividades</strong>. Recomendamos focar em <strong>${nomesCategorias[categoriaMenosHoras]}</strong> (${horasPorCategoria[categoriaMenosHoras]}h de ${limitesCategorias[categoriaMenosHoras]}h).`);
+            }
+
+            // Verificar se alguma categoria ultrapassou o limite
+            Object.keys(limitesCategorias).forEach(categoria => {
+                if (horasPorCategoria[categoria] > limitesCategorias[categoria]) {
+                    const excesso = horasPorCategoria[categoria] - limitesCategorias[categoria];
+                    suggestions.push(`⚠️ Você ultrapassou o limite de <strong>${nomesCategorias[categoria]}</strong> em ${excesso}h. Considere diversificar suas atividades.`);
+                }
+            });
+
+            if (totalExtensao >= 330 && totalOutras >= 100) {
+                suggestions.push(`🎉 <strong>Parabéns!</strong> Você já completou as 430h necessárias! Total: ${totalExtensao + totalOutras}h`);
+            }
+
+            suggestionsList.innerHTML = suggestions.map(suggestion => 
+                `<div class="suggestion-item">${suggestion}</div>`
+            ).join('');
+        }
+
+        // Inicializar quando a página carregar
+        init();
+    </script>
+</body>
+</html>
