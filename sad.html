@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistema de Horas Complementares - UFBA (v2)</title>
-    <!-- Mantive todo o CSS original -->
+    <title>Sistema de Horas Complementares – UFBA (v3)</title>
     <style>
         *{margin:0;padding:0;box-sizing:border-box}
         body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(135deg,#f5f7fa 0%,#c3cfe2 100%);min-height:100vh;padding:20px}
@@ -19,7 +18,7 @@
         label{display:block;margin-bottom:8px;color:#4a5568;font-weight:500}
         input,select,textarea{width:100%;padding:12px 15px;border:2px solid #e2e8f0;border-radius:10px;font-size:16px;transition:border-color .3s ease;background:#fff}
         input:focus,select:focus,textarea:focus{outline:none;border-color:#a8b5ff;box-shadow:0 0 0 3px rgba(168,181,255,.1)}
-        button{background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:#fff;border:none;padding:12px 30px;border-radius:25px;font-size:16px;cursor:pointer;transition:transform .2s ease;margin-right:10px}
+        button{background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:#fff;border:none;padding:12px 30px;border-radius:25px;font-size:16px;cursor:pointer;transition:transform .2s ease;margin:5px 10px 5px 0}
         button:hover{transform:translateY(-2px);box-shadow:0 5px 15px rgba(102,126,234,.4)}
         .activity-item{background:#fff;padding:15px;margin:10px 0;border-radius:10px;border-left:4px solid #a8b5ff;box-shadow:0 2px 10px rgba(0,0,0,.05)}
         .activity-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
@@ -33,6 +32,7 @@
         .category-name{font-weight:600;color:#2d3748;margin-bottom:5px}
         .suggestions{background:#fffbeb;padding:20px;border-radius:15px;border-left:5px solid #f6ad55;margin-top:20px}
         .suggestion-item{padding:10px;margin:8px 0;background:#fff;border-radius:8px;border-left:3px solid #f6ad55}
+        .decision-box{background:#ebf8ff;padding:20px;border-radius:15px;border-left:5px solid #4299e1;margin-top:20px}
         @media(max-width:768px){.main-content{grid-template-columns:1fr}h1{font-size:2em}}
     </style>
 </head>
@@ -69,9 +69,10 @@
             <h2>📊 Suas Atividades</h2>
             <div id="activities"></div>
             <div class="suggestions" id="suggestions" style="display:none;">
-                <h3>💡 Sugestões de Aproveitamento</h3>
+                <h3>💡 Alertas & Dicas</h3>
                 <div id="suggestionsList"></div>
             </div>
+            <div id="decisionBox" class="decision-box" style="display:none;"></div>
         </div>
     </div>
 
@@ -83,160 +84,120 @@
 
 <script>
 /**********************  DADOS **********************/
-// 🔄 Atualizado: agora cada atividade pode ter categorias alternativas
-const atividades = {
-    /* … (todas as definições anteriores permanecem iguais) … */
-    // Exemplo atualizado: premiação em olimpíadas
-    premiacao_olimpiadas:{
-        nome:"Premiação em Olimpíadas e/ou Maratonas",
-        categoria:"eventos",               // categoria padrão
-        categoriasAlternativas:["vivencia"],// 👉 pode também ser usada em 2c (Vivência Profissional)
-        maxHoras:60,
-        comprovacao:"Certificado/declaração de premiação"
-    },
-    // — restantes das atividades copiadas do arquivo original —
-    estagio:{nome:"Estágio Supervisionado",categoria:"extensao",maxHoras:100,comprovacao:"Plano de estágio e relatório"},
-    // … copie todas as outras atividades aqui mantendo o mesmo formato …
+// Todas as atividades listadas no barema (resolução 02/2024). Para economizar espaço, apenas alguns exemplos
+// estão detalhados aqui; adicione o restante conforme necessidade.
+const atividades={
+    // ——— Categoria 1 – Extensão ———
+    accs:{nome:"ACCS – Ação Curricular em Comunidade e Sociedade",categoria:"extensao",maxHoras:330,comprovacao:"Comprovante de carga horária"},
+    estagio:{nome:"Estágio Supervisionado",categoria:"extensao",maxHoras:100,comprovacao:"Plano de estágio + relatório"},
+    programa_extensao:{nome:"Programa de Extensão",categoria:"extensao",maxHoras:120,comprovacao:"Comprovante SIATEX"},
+    projeto_extensao:{nome:"Projeto de Extensão",categoria:"extensao",maxHoras:120,comprovacao:"Comprovante SIATEX"},
+    curso_extensao:{nome:"Curso/Oficina de Extensão (monitor/ministrante)",categoria:"extensao",maxHoras:120,comprovacao:"Certificado de monitor/ministrante"},
+    evento_extensao:{nome:"Evento de Extensão (com intervenção externa)",categoria:"extensao",maxHoras:100,comprovacao:"Comprovante de participação"},
+    atividade_campo:{nome:"Atividade de Campo",categoria:"extensao",maxHoras:100,comprovacao:"Comprovante com carga horária"},
+    publicacao_extensao:{nome:"Publicação ou Produto de Extensão",categoria:"extensao",maxHoras:100,comprovacao:"Comprovante de publicação"},
+    prest_servico:{nome:"Prestação de Serviço à Comunidade",categoria:"extensao",maxHoras:100,comprovacao:"Comprovante da atividade"},
+    liga_academica:{nome:"Liga Acadêmica",categoria:"extensao",maxHoras:120,comprovacao:"Comprovante de participação"},
+    empresa_junior:{nome:"Empresa Júnior",categoria:"extensao",maxHoras:120,comprovacao:"Comprovante de participação"},
+    movimento_estudantil_ext:{nome:"Movimento/Coletivo Estudantil (com extensão)",categoria:"extensao",maxHoras:120,comprovacao:"Comprovante"},
+    open_source_comunidade:{nome:"Open‑source (comunidades externas)",categoria:"extensao",maxHoras:30,comprovacao:"Issue/merge aceito"},
+
+    // —— Categoria 2a – Ensino ——
+    monitoria:{nome:"Monitoria",categoria:"ensino",maxHoras:30,comprovacao:"Certificado ≥20h"},
+    pet:{nome:"PET – Educação Tutorial",categoria:"ensino",maxHoras:30,comprovacao:"Certificado ≥20h"},
+    grupo_estudo:{nome:"Grupo de Estudo",categoria:"ensino",maxHoras:30,comprovacao:"Certificado ≥20h"},
+
+    // —— 2b – Pesquisa ——
+    iniciacao_cientifica:{nome:"Iniciação Científica",categoria:"pesquisa",maxHoras:30,comprovacao:"Certificado ≥20h"},
+    apresentacao_trabalho:{nome:"Apresentação de Trabalho em Evento",categoria:"pesquisa",maxHoras:30,comprovacao:"Comprovante de apresentação"},
+    publicacao_periodico:{nome:"Publicação em Periódico",categoria:"pesquisa",maxHoras:30,comprovacao:"Artigo publicado"},
+    publicacao_conferencia:{nome:"Publicação em Conferência",categoria:"pesquisa",maxHoras:30,comprovacao:"Artigo publicado"},
+    premiacao_pesquisa:{nome:"Premiação em Pesquisa",categoria:"pesquisa",maxHoras:20,comprovacao:"Certificado de premiação"},
+
+    // —— 2c – Vivência Profissional ——
+    gestao_redes:{nome:"Gestão de Redes Acadêmicas",categoria:"vivencia",maxHoras:30,comprovacao:"Relatório docente"},
+    certificacao_tech:{nome:"Certificação Tecnológica",categoria:"vivencia",maxHoras:30,comprovacao:"Certificado"},
+    treinamento_prof:{nome:"Treinamento Profissional",categoria:"vivencia",maxHoras:30,comprovacao:"Certificado"},
+    competicao_academica:{nome:"Competição Acadêmica UFBA",categoria:"vivencia",maxHoras:60,comprovacao:"Certificado"},
+    open_source_sti:{nome:"Contribuição open‑source STI/UFBA",categoria:"vivencia",maxHoras:30,comprovacao:"Declaração orientador"},
+
+    // —— 2d – Eventos Técnicos ——
+    evento_tecnico:{nome:"Congresso/Seminário/Workshop",categoria:"eventos",maxHoras:30,comprovacao:"Certificado"},
+    sociedade_cientifica:{nome:"Associação em Sociedade Científica",categoria:"eventos",maxHoras:10,comprovacao:"Carteira/declaração"},
+    premiacao_olimpiadas:{nome:"Premiação em Olimpíadas/Maratonas",categoria:"eventos",categoriasAlternativas:["vivencia"],maxHoras:30,comprovacao:"Certificado de premiação"},
+
+    // —— 2e – Intervenção Organizacional ——
+    organizacao_evento:{nome:"Organização de Evento",categoria:"organizacional",maxHoras:30,comprovacao:"Certificado organização"},
+    ministrante:{nome:"Ministrante de Curso",categoria:"organizacional",maxHoras:30,comprovacao:"Certificado"},
+    solucao_tech:{nome:"Desenvolvimento de Solução Tecnológica",categoria:"organizacional",maxHoras:30,comprovacao:"Registro/autoria"},
+    adm_colegiado:{nome:"Atuação Administrativa (Colegiado/IC)",categoria:"organizacional",maxHoras:20,comprovacao:"Relatório docente"},
+
+    // —— 2f – Representação Estudantil ——
+    representacao_discente:{nome:"Representação Discente (CA/DA/DCE)",categoria:"representacao",maxHoras:30,comprovacao:"Ata + declaração"},
+    representacao_unidade:{nome:"Representação em Colegiado/Depart.",categoria:"representacao",maxHoras:30,comprovacao:"Ata + declaração"},
+    comissao_eleitoral:{nome:"Comissão Eleitoral",categoria:"representacao",maxHoras:10,comprovacao:"Ata de apuração"},
+    representacao_sociedade:{nome:"Representação em Sociedade Científica",categoria:"representacao",maxHoras:30,comprovacao:"Declaração da sociedade"},
+
+    // —— 2g – Formação Interdisciplinar ——
+    curso_idioma:{nome:"Curso de Idiomas (nível interm.+)",categoria:"interdisciplinar",maxHoras:30,comprovacao:"Certificado"},
+    certificacao_idioma:{nome:"Certificação de Proficiência",categoria:"interdisciplinar",maxHoras:20,comprovacao:"Certificado"},
+    disciplina_externa:{nome:"Disciplina Fora da Matriz",categoria:"interdisciplinar",maxHoras:30,comprovacao:"Histórico escolar"},
+
+    // —— 2h – Outros ——
+    atividade_fisica:{nome:"Atividades Físicas/Esportivas",categoria:"outros",maxHoras:20,comprovacao:"Certificado instituição"},
+    atividade_cultural:{nome:"Atividades Culturais",categoria:"outros",maxHoras:20,comprovacao:"Certificado ≥40h"},
+    doacao_sangue:{nome:"Doação de Sangue",categoria:"outros",maxHoras:10,comprovacao:"Atestado"},
+    mesario:{nome:"Mesário (Eleições)",categoria:"outros",maxHoras:10,comprovacao:"Declaração TSE/TRE"}
 };
 
-// Limites por categoria (inalterado)
-const limitesCategorias={
-    extensao:330,ensino:30,pesquisa:30,vivencia:30,eventos:30,organizacional:30,representacao:30,interdisciplinar:30,outros:20
-};
-const nomesCategorias={
-    extensao:"Extensão",ensino:"Ensino",pesquisa:"Pesquisa",vivencia:"Vivência Profissional",eventos:"Eventos Técnicos",organizacional:"Intervenção Organizacional",representacao:"Representação Estudantil",interdisciplinar:"Formação Interdisciplinar",outros:"Outros"
-};
+// Limites por sub‑categoria
+const limitesCategorias={extensao:330,ensino:30,pesquisa:30,vivencia:30,eventos:30,organizacional:30,representacao:30,interdisciplinar:30,outros:20};
+const nomesCategorias={extensao:"Extensão",ensino:"Ensino",pesquisa:"Pesquisa",vivencia:"Vivência Profissional",eventos:"Eventos Técnicos",organizacional:"Intervenção Organizacional",representacao:"Representação Estudantil",interdisciplinar:"Formação Interdisciplinar",outros:"Outros"};
 
 /**********************  ESTADO **********************/
 let atividadesRealizadas=[];
+let pending=null; // guarda escolha pendente
 
-/**********************  FUNÇÕES DE APOIO **********************/
-function horasJaRealizadasDoTipo(tipo){
-    return atividadesRealizadas.filter(a=>a.tipo===tipo).reduce((s,a)=>s+a.horas,0);
-}
+/**********************  FUNÇÕES **********************/
+function horasJaRealizadasDoTipo(tipo){return atividadesRealizadas.filter(a=>a.tipo===tipo).reduce((s,a)=>s+a.horas,0);}    
 
-function categoriaMaisVazia(opcoes){
-    // Calcula qual das categorias em 'opcoes' tem menor proporção preenchida
-    const horasPorCategoria={};
-    Object.keys(limitesCategorias).forEach(cat=>horasPorCategoria[cat]=0);
-    atividadesRealizadas.forEach(a=>horasPorCategoria[a.categoria]+=a.horas);
-    let melhor=opcoes[0];
-    let menorPerc=horasPorCategoria[melhor]/limitesCategorias[melhor];
-    for(const cat of opcoes.slice(1)){
-        const perc=horasPorCategoria[cat]/limitesCategorias[cat];
-        if(perc<menorPerc){menorPerc=perc;melhor=cat;}
-    }
-    return melhor;
-}
+function populateActivitySelect(){const sel=document.getElementById('activityType');const grupos={};Object.entries(atividades).forEach(([k,a])=>{if(!grupos[a.categoria])grupos[a.categoria]=[];grupos[a.categoria].push({key:k,...a});});Object.keys(grupos).forEach(cat=>{const og=document.createElement('optgroup');og.label=nomesCategorias[cat];grupos[cat].sort((x,y)=>x.nome.localeCompare(y.nome)).forEach(at=>{const op=document.createElement('option');op.value=at.key;op.textContent=at.nome;og.appendChild(op);});sel.appendChild(og);});}
 
-/**********************  INICIALIZAÇÃO **********************/
-function init(){
-    populateActivitySelect();
-    updateDisplay();
-}
+function showDecisionBox(p){const box=document.getElementById('decisionBox');box.innerHTML=`<h3>📌 Onde alocar esta atividade?</h3><p><strong>${p.nome}</strong> – ${p.horas}h</p>`+p.opcoes.map(c=>`<button onclick="confirmChoice('${c}')">Usar ${nomesCategorias[c]}</button>`).join('')+`<button style="background:#ff6b6b" onclick="cancelChoice()">Cancel</button>`;box.style.display='block';}
+function hideDecisionBox(){document.getElementById('decisionBox').style.display='none';}
 
-function populateActivitySelect(){
-    const select=document.getElementById('activityType');
-    // Agrupar por categoria primária
-    const grupos={};
-    Object.entries(atividades).forEach(([key,at])=>{
-        if(!grupos[at.categoria])grupos[at.categoria]=[];
-        grupos[at.categoria].push({...at,key});
-    });
-    Object.keys(grupos).forEach(cat=>{
-        const optgroup=document.createElement('optgroup');
-        optgroup.label=nomesCategorias[cat];
-        grupos[cat].forEach(at=>{
-            const option=document.createElement('option');
-            option.value=at.key;
-            option.textContent=at.nome;
-            optgroup.appendChild(option);
-        });
-        select.appendChild(optgroup);
-    });
-}
+function confirmChoice(cat){if(!pending)return;addActivity({...pending,categoria:cat});pending=null;hideDecisionBox();}
+function cancelChoice(){pending=null;hideDecisionBox();}
 
-/**********************  HANDLERS **********************/
-document.getElementById('activityForm').addEventListener('submit',function(e){
-    e.preventDefault();
-    const tipo=document.getElementById('activityType').value;
-    const horasInput=parseInt(document.getElementById('hours').value);
-    const desc=document.getElementById('description').value;
-    if(!tipo||!horasInput)return;
-    const atividade=atividades[tipo];
+function addActivity(obj){atividadesRealizadas.push(obj);updateDisplay();}
 
-    // 1️⃣ Verificar limite do tipo
-    const jaFeitas=horasJaRealizadasDoTipo(tipo);
-    const restante=atividade.maxHoras-jaFeitas;
-    if(restante<=0){
-        alert(`Limite máximo (${atividade.maxHoras}h) para \"${atividade.nome}\" já atingido.`);
-        return;
-    }
-    const horasParaAdicionar=Math.min(horasInput,restante);
-    if(horasParaAdicionar<horasInput){
-        alert(`Apenas ${horasParaAdicionar}h podem ser adicionadas. (${atividade.maxHoras}h máximo por atividade).`);
-    }
-
-    // 2️⃣ Escolher (ou sugerir) melhor categoria quando houver alternativas
-    let categoriaEscolhida=atividade.categoria;
-    if(atividade.categoriasAlternativas){
-        const opcoes=[atividade.categoria,...atividade.categoriasAlternativas];
-        categoriaEscolhida=categoriaMaisVazia(opcoes);
-        if(categoriaEscolhida!==atividade.categoria){
-            alert(`Sugestão: esta atividade pode contar em mais de uma sub‑categoria. Ela foi alocada em \"${nomesCategorias[categoriaEscolhida]}\" por estar com menos horas.`);
-        }
-    }
-
-    const novo={id:Date.now(),tipo,nome:atividade.nome,categoria:categoriaEscolhida,horas:horasParaAdicionar,descricao:desc,comprovacao:atividade.comprovacao};
-    atividadesRealizadas.push(novo);
-    document.getElementById('activityForm').reset();
-    updateDisplay();
-});
-
-function removeActivity(id){
-    atividadesRealizadas=atividadesRealizadas.filter(a=>a.id!==id);
-    updateDisplay();
-}
-function clearAll(){atividadesRealizadas=[];updateDisplay();}
-
-/**********************  UI **********************/
 function updateDisplay(){displayActivities();displayProgress();displaySuggestions();}
 
-function displayActivities(){
-    const cont=document.getElementById('activities');
-    if(!atividadesRealizadas.length){cont.innerHTML='<p style="color:#718096;font-style:italic;">Nenhuma atividade adicionada ainda.</p>';return;}
-    cont.innerHTML=atividadesRealizadas.map(a=>`<div class="activity-item"><div class="activity-header"><div class="activity-title">${a.nome}</div><span class="hours-badge">${a.horas}h</span><button class="remove-btn" onclick="removeActivity(${a.id})">×</button></div><div style="font-size:.9em;color:#718096;"><strong>Categoria:</strong> ${nomesCategorias[a.categoria]}</div>${a.descricao?`<div style="font-size:.9em;color:#4a5568;margin-top:5px;"><strong>Descrição:</strong> ${a.descricao}</div>`:''}<div style="font-size:.85em;color:#a0aec0;margin-top:8px;"><strong>Comprovação:</strong> ${a.comprovacao}</div></div>`).join('');
-}
+function displayActivities(){const c=document.getElementById('activities');if(!atividadesRealizadas.length){c.innerHTML='<p style="color:#718096;font-style:italic;">Nenhuma atividade adicionada ainda.</p>';return;}c.innerHTML=atividadesRealizadas.map(a=>`<div class="activity-item"><div class="activity-header"><div class="activity-title">${a.nome}</div><span class="hours-badge">${a.horas}h</span><button class="remove-btn" onclick="removeActivity(${a.id})">×</button></div><div style="font-size:.9em;color:#718096;"><strong>Categoria:</strong> ${nomesCategorias[a.categoria]}</div>${a.descricao?`<div style="font-size:.9em;color:#4a5568;margin-top:5px;"><strong>Descrição:</strong> ${a.descricao}</div>`:''}<div style="font-size:.85em;color:#a0aec0;margin-top:8px;"><strong>Comprovação:</strong> ${a.comprovacao}</div></div>`).join('');}
 
-function displayProgress(){
-    const cont=document.getElementById('progressBars');
-    const horasPorCat={};Object.keys(limitesCategorias).forEach(c=>horasPorCat[c]=0);
-    atividadesRealizadas.forEach(a=>horasPorCat[a.categoria]+=a.horas);
-    const totalExt=horasPorCat.extensao;
-    const totalOutras=Object.keys(horasPorCat).filter(c=>c!=='extensao').reduce((s,c)=>s+horasPorCat[c],0);
-    const total=totalExt+totalOutras;
-    cont.innerHTML=`<div class="category-progress"><div class="category-name">Total Geral: ${total}/430h (${Math.round(total/430*100)}%)</div><div class="progress-bar"><div class="progress-fill" style="width:${Math.min(total/430*100,100)}%"></div></div></div><div class="category-progress"><div class="category-name">Extensão: ${totalExt}/330h (${Math.round(totalExt/330*100)}%)</div><div class="progress-bar"><div class="progress-fill" style="width:${Math.min(totalExt/330*100,100)}%"></div></div></div><div class="category-progress"><div class="category-name">Outras Atividades: ${totalOutras}/100h (${Math.round(totalOutras/100*100)}%)</div><div class="progress-bar"><div class="progress-fill" style="width:${Math.min(totalOutras/100*100,100)}%"></div></div></div>`+Object.keys(limitesCategorias).filter(c=>c!=='extensao').map(cat=>{const h=horasPorCat[cat],lim=limitesCategorias[cat],perc=Math.round(h/lim*100);return`<div class="category-progress"><div class="category-name">${nomesCategorias[cat]}: ${h}/${lim}h (${perc}%)</div><div class="progress-bar"><div class="progress-fill" style="width:${Math.min(perc,100)}%"></div></div></div>`;}).join('');
-}
+function displayProgress(){const cont=document.getElementById('progressBars');const horasCat={};Object.keys(limitesCategorias).forEach(c=>horasCat[c]=0);atividadesRealizadas.forEach(a=>horasCat[a.categoria]+=a.horas);const totalExt=horasCat.extensao;const totalOut=Object.keys(horasCat).filter(c=>c!=='extensao').reduce((s,c)=>s+horasCat[c],0);const total=totalExt+totalOut;cont.innerHTML=`<div class="category-progress"><div class="category-name">Total Geral: ${total}/430h (${Math.round(total/430*100)}%)</div><div class="progress-bar"><div class="progress-fill" style="width:${Math.min(total/430*100,100)}%"></div></div></div>`+Object.keys(limitesCategorias).map(cat=>{const h=horasCat[cat],lim=limitesCategorias[cat],perc=Math.round(h/lim*100);return`<div class="category-progress"><div class="category-name">${nomesCategorias[cat]}: ${h}/${lim}h (${perc}%)</div><div class="progress-bar"><div class="progress-fill" style="width:${Math.min(perc,100)}%"></div></div></div>`;}).join('');}
 
-function displaySuggestions(){
-    const wrapper=document.getElementById('suggestions');
-    const list=document.getElementById('suggestionsList');
-    if(!atividadesRealizadas.length){wrapper.style.display='none';return;}
-    wrapper.style.display='block';
-    const horasPorCat={};Object.keys(limitesCategorias).forEach(c=>horasPorCat[c]=0);
-    atividadesRealizadas.forEach(a=>horasPorCat[a.categoria]+=a.horas);
-    const totalExt=horasPorCat.extensao;
-    const totalOutras=Object.keys(horasPorCat).filter(c=>c!=='extensao').reduce((s,c)=>s+horasPorCat[c],0);
-    const sugg=[];
-    if(totalExt<330)sugg.push(`Você ainda precisa de ${330-totalExt}h em <strong>Extensão</strong>.`);
-    if(totalOutras<100){const catMenos=Object.keys(horasPorCat).filter(c=>c!=='extensao').sort((a,b)=>horasPorCat[a]-horasPorCat[b])[0];sugg.push(`Precisa de mais ${100-totalOutras}h em <strong>Outras Atividades</strong>. Recomendamos focar em <strong>${nomesCategorias[catMenos]}</strong>.`);}
-    Object.keys(limitesCategorias).forEach(c=>{if(horasPorCat[c]>limitesCategorias[c]){const exced=horasPorCat[c]-limitesCategorias[c];sugg.push(`⚠️ Limite de <strong>${nomesCategorias[c]}</strong> excedido em ${exced}h.`);}});
-    if(totalExt>=330&&totalOutras>=100)sugg.push(`🎉 <strong>Parabéns!</strong> Você já completou as 430h necessárias!`);
-    list.innerHTML=sugg.map(s=>`<div class="suggestion-item">${s}</div>`).join('');
-}
+function displaySuggestions(){const wrap=document.getElementById('suggestions');const list=document.getElementById('suggestionsList');if(!atividadesRealizadas.length){wrap.style.display='none';return;}wrap.style.display='block';const horasCat={};Object.keys(limitesCategorias).forEach(c=>horasCat[c]=0);atividadesRealizadas.forEach(a=>horasCat[a.categoria]+=a.horas);const msgs=[];Object.keys(limitesCategorias).forEach(c=>{if(horasCat[c]>limitesCategorias[c])msgs.push(`⚠️ Excedeu o limite de <strong>${nomesCategorias[c]}</strong> em ${horasCat[c]-limitesCategorias[c]}h.`);});if(!msgs.length)msgs.push('👍 Tudo dentro dos limites até agora.');list.innerHTML=msgs.map(m=>`<div class="suggestion-item">${m}</div>`).join('');}
 
-// 🚀 start
-init();
+function removeActivity(id){atividadesRealizadas=atividadesRealizadas.filter(a=>a.id!==id);updateDisplay();}
+function clearAll(){atividadesRealizadas=[];updateDisplay();hideDecisionBox();}
+
+/**********************  HANDLER DO FORM **********************/
+document.getElementById('activityForm').addEventListener('submit',e=>{
+    e.preventDefault();
+    const tipo=document.getElementById('activityType').value;if(!tipo)return;
+    const horasInput=parseInt(document.getElementById('hours').value);if(!horasInput)return;
+    const desc=document.getElementById('description').value;const at=atividades[tipo];
+    // limite por tipo
+    const ja=horasJaRealizadasDoTipo(tipo);const restante=at.maxHoras-ja;if(restante<=0){alert(`Limite de ${at.maxHoras}h para “${at.nome}” já atingido.`);return;}const horasAdd=Math.min(horasInput,restante);if(horasAdd<horasInput)alert(`Só é possível adicionar ${horasAdd}h (máximo por atividade).`);
+    const opcoes=at.categoriasAlternativas?[at.categoria,...at.categoriasAlternativas]:[at.categoria];
+    const baseObj={id:Date.now(),tipo,nome:at.nome,horas:horasAdd,descricao:desc,comprovacao:at.comprovacao,opcoes};
+    if(opcoes.length>1){pending=baseObj;showDecisionBox({...baseObj});}else{addActivity({...baseObj,categoria:at.categoria});}
+    document.getElementById('activityForm').reset();
+});
+
+// 🚀 Init
+populateActivitySelect();updateDisplay();
 </script>
 </body>
 </html>
