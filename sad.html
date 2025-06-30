@@ -1,262 +1,189 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistema de Horas Complementares – UFBA (v4)</title>
-    <style>
-        *{margin:0;padding:0;box-sizing:border-box}
-        body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(135deg,#f5f7fa 0%,#c3cfe2 100%);min-height:100vh;padding:20px}
-        .container{max-width:1200px;margin:0 auto;background:rgba(255,255,255,.95);border-radius:20px;box-shadow:0 20px 40px rgba(0,0,0,.1);overflow:hidden}
-        header{background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:#fff;padding:30px;text-align:center}
-        h1{font-size:2.5em;margin-bottom:10px;font-weight:300}.subtitle{font-size:1.1em;opacity:.9}
-        .main-content{display:grid;grid-template-columns:1fr 1fr;gap:30px;padding:30px}
-        .form-section{background:#f8f9ff;padding:25px;border-radius:15px;border-left:5px solid #a8b5ff}
-        .results-section{background:#fff5f5;padding:25px;border-radius:15px;border-left:5px solid #ffb3b3}
-        h2{color:#5a6acf;margin-bottom:20px;font-size:1.5em}
-        .form-group{margin-bottom:20px}
-        label{display:block;margin-bottom:8px;color:#4a5568;font-weight:500}
-        input,select,textarea{width:100%;padding:12px 15px;border:2px solid #e2e8f0;border-radius:10px;font-size:16px;transition:border-color .3s ease;background:#fff}
-        input:focus,select:focus,textarea:focus{outline:none;border-color:#a8b5ff;box-shadow:0 0 0 3px rgba(168,181,255,.1)}
-        button{background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:#fff;border:none;padding:10px 22px;border-radius:25px;font-size:15px;cursor:pointer;transition:transform .2s ease;margin:5px 10px 5px 0}
-        button:hover{transform:translateY(-2px);box-shadow:0 5px 15px rgba(102,126,234,.4)}
-        .activity-item{background:#fff;padding:15px;margin:10px 0;border-radius:10px;border-left:4px solid #a8b5ff;box-shadow:0 2px 10px rgba(0,0,0,.05)}
-        .activity-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
-        .activity-title{font-weight:600;color:#2d3748;flex-grow:1}
-        .hours-badge{background:#a8b5ff;color:#fff;padding:4px 12px;border-radius:15px;font-size:.85em;font-weight:500}
-        .remove-btn{background:#ff6b6b;padding:5px 10px;font-size:12px;margin-left:10px}
-        .progress-section{margin-top:30px;padding:20px;background:#f0fff4;border-radius:15px;border-left:5px solid #68d391}
-        .progress-bar{background:#e2e8f0;height:20px;border-radius:10px;overflow:hidden;margin:10px 0}
-        .progress-fill{height:100%;background:linear-gradient(90deg,#68d391 0%,#38b2ac 100%);transition:width .3s ease;border-radius:10px}
-        .category-progress{margin:15px 0}
-        .category-name{font-weight:600;color:#2d3748;margin-bottom:5px}
-        .suggestions{background:#fffbeb;padding:20px;border-radius:15px;border-left:5px solid #f6ad55;margin-top:20px}
-        .suggestion-item{padding:10px;margin:8px 0;background:#fff;border-radius:8px;border-left:3px solid #f6ad55}
-        .decision-box{background:#ebf8ff;padding:20px;border-radius:15px;border-left:5px solid #4299e1;margin-top:20px}
-        .perfil-box{background:#e6fffa;padding:15px;border-radius:15px;border-left:5px solid #38b2ac;margin-bottom:25px}
-        .perfil-option{margin-right:12px;font-size:.95em}
-        @media(max-width:768px){.main-content{grid-template-columns:1fr}h1{font-size:2em}}
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sistema de Horas Complementares – UFBA (v4.4)</title>
+  <style>
+    /* ===== RESET & BASE ===== */
+    *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif}
+    body{background:linear-gradient(135deg,#f5f7fa 0%,#c3cfe2 100%);min-height:100vh;padding:20px;color:#1a202c}
+    h1,h2,h3{font-weight:300}
+    /* ===== LAYOUT ===== */
+    .container{max-width:1200px;margin:0 auto;background:#fff;border-radius:20px;box-shadow:0 25px 55px rgba(0,0,0,.08);overflow:hidden}
+    header{background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:#fff;padding:34px 20px;text-align:center}
+    header h1{font-size:2.3em;margin-bottom:4px}
+    .main{display:grid;grid-template-columns:1fr 1fr;gap:32px;padding:28px}
+    @media(max-width:860px){.main{grid-template-columns:1fr}}
+    .panel{padding:24px;border-radius:18px}
+    .form-panel{background:#f8faff;border-left:6px solid #8c97ff}
+    .list-panel{background:#fff5f5;border-left:6px solid #ffb3b3}
+    .progress-panel{background:#f0fff4;border-left:6px solid #48bb78;padding:26px 30px}
+    /* ===== WIDGETS / ELEMENTS ===== */
+    h2{color:#5661d1;font-size:1.45em;margin-bottom:16px}
+    .form-group{margin-bottom:16px}
+    label{display:block;font-weight:600;margin-bottom:6px;color:#4a5568}
+    select,input,textarea{width:100%;padding:10px 14px;border:2px solid #e2e8f0;border-radius:10px;font-size:15px;background:#fff;transition:border-color .25s}
+    select:focus,input:focus,textarea:focus{outline:none;border-color:#8c97ff;box-shadow:0 0 0 3px rgba(140,151,255,.15)}
+    button{border:none;padding:8px 20px;font-size:15px;border-radius:25px;margin:4px 10px 0 0;cursor:pointer;transition:transform .2s;color:#fff;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%)}
+    button:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(102,126,234,.35)}
+    .btn-danger{background:#ff6060}
+    /* ===== ACTIVITY CARD ===== */
+    .activity-card,.legend-card{background:#fff;border-left:4px solid #8c97ff;box-shadow:0 3px 10px rgba(0,0,0,.05);border-radius:12px;padding:14px;margin:9px 0}
+    .activity-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+    .activity-title{font-weight:600;font-size:.95em;color:#2d3748;flex:1}
+    .badge{background:#8c97ff;color:#fff;border-radius:14px;padding:3px 10px;font-size:.78em;font-weight:500}
+    .remove-btn{padding:3px 9px;border-radius:12px;margin-left:10px;font-size:.8em}
+    .legend-card{border-left-color:#a0aec0}
+    /* ===== PROGRESS ===== */
+    .progress-row{margin:12px 0}
+    .progress-label{font-size:.9em;font-weight:600;margin-bottom:4px;color:#2d3748}
+    .bar-bg{background:#e2e8f0;height:18px;border-radius:10px;overflow:hidden}
+    .bar-fill{height:100%;background:linear-gradient(90deg,#48bb78 0%,#38b2ac 100%);border-radius:10px;transition:width .35s}
+    /* ===== OTHER BOXES ===== */
+    .suggestions{margin-top:20px;background:#fffdf4;border-left:6px solid #f6ad55;border-radius:15px;padding:18px}
+    .suggestion-item{margin:6px 0;padding:8px;background:#fff;border-left:3px solid #f6ad55;border-radius:8px;font-size:.9em}
+    .decision-box{margin-top:20px;background:#ebf8ff;border-left:6px solid #4299e1;border-radius:15px;padding:18px}
+    .perfil-box{background:#e6fffa;border-left:6px solid #38b2ac;border-radius:15px;padding:14px;margin-top:20px}
+    .perfil-option{margin-right:12px;font-size:.9em}
+  </style>
 </head>
 <body>
-<div class="container">
+  <div class="container">
     <header>
-        <h1>Sistema de Horas Complementares</h1>
-        <p class="subtitle">Ciência da Computação – UFBA</p>
+      <h1>Sistema de Horas Complementares</h1>
+      <p>Ciência da Computação – UFBA</p>
     </header>
-
-    <div class="main-content">
-        <div class="form-section">
-            <h2>📝 Adicionar Atividade</h2>
-            <form id="activityForm">
-                <div class="form-group">
-                    <label for="activityType">Tipo de Atividade:</label>
-                    <select id="activityType" required>
-                        <option value="">Selecione uma atividade…</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="hours">Horas Realizadas:</label>
-                    <input type="number" id="hours" min="1" required>
-                </div>
-                <div class="form-group">
-                    <label for="description">Descrição (opcional):</label>
-                    <textarea id="description" rows="3" placeholder="Descreva brevemente a atividade…"></textarea>
-                </div>
-                <button type="submit">Adicionar Atividade</button>
-                <button type="button" onclick="clearAll()">Limpar Tudo</button>
-            </form>
-
-            <div class="perfil-box">
-                <h3 style="color:#2c7a7b;margin-bottom:8px;">🎯 Meu Perfil</h3>
-                <div id="perfilOptions"></div>
-            </div>
+    <div class="main">
+      <!-- ========= FORM ========= -->
+      <section class="panel form-panel">
+        <h2>📝 Adicionar Atividade</h2>
+        <form id="activityForm">
+          <div class="form-group">
+            <label for="activityType">Tipo de Atividade:</label>
+            <select id="activityType" required><option value="">Selecione…</option></select>
+          </div>
+          <div class="form-group">
+            <label for="hours">Horas Realizadas:</label>
+            <input id="hours" type="number" min="1" required>
+          </div>
+          <div class="form-group">
+            <label for="description">Descrição (opcional):</label>
+            <textarea id="description" rows="3"></textarea>
+          </div>
+          <button type="submit">Adicionar</button><button type="button" class="btn-danger" onclick="clearAll()">Limpar Tudo</button>
+        </form>
+        <div class="perfil-box">
+          <h3 style="margin-bottom:6px;color:#256d6a">🎯 Meu Perfil</h3>
+          <div id="perfilOptions"></div>
         </div>
-        <div class="results-section">
-            <h2>📊 Suas Atividades</h2>
-            <div id="activities"></div>
-            <div class="suggestions" id="suggestions" style="display:none;">
-                <h3>💡 Alertas & Sugestões</h3>
-                <div id="suggestionsList"></div>
-            </div>
-            <div id="decisionBox" class="decision-box" style="display:none;"></div>
+      </section>
+      <!-- ========= LISTA ========= -->
+      <section class="panel list-panel">
+        <h2>📊 Suas Atividades</h2>
+        <div id="activities"></div>
+        <div class="suggestions" id="suggestions" style="display:none;">
+          <h3>💡 Alertas & Sugestões</h3>
+          <div id="suggestionsList"></div>
         </div>
+        <div id="decisionBox" class="decision-box" style="display:none;"></div>
+      </section>
     </div>
-
-    <div class="progress-section">
-        <h2>📈 Progresso das Horas Complementares</h2>
-        <div id="progressBars"></div>
-    </div>
-</div>
+    <!-- ========= PROGRESS ========= -->
+    <section class="progress-panel">
+      <h2>📈 Progresso das Horas Complementares</h2>
+      <div id="progressBars"></div>
+      <div id="legendBox"></div>
+    </section>
+  </div>
 
 <script>
-/**********************  DEFINIÇÕES **********************/
-const perfisEnum={social:"Social",mercado:"Mercado",academico:"Acadêmico",geral:"Geral"};
+/*********************** CONSTANTES ***********************/
+const LIMITE_OUTRAS=100;
+const perfisEnum={social:'Social',mercado:'Mercado',academico:'Acadêmico',geral:'Geral'};
 
-// Atividades (barema completo condensado)
+// ======= Atividades (mais criterioso, sem mesclar incongruentes) =======
 const atividades={
-    // Extensão (social)
-    accs:{nome:"ACCS – Ação Curricular em Comunidade e Sociedade",categoria:"extensao",maxHoras:330,perfil:"social"},
-    estagio:{nome:"Estágio Supervisionado",categoria:"extensao",maxHoras:100,perfil:"social"},
-    programa_extensao:{nome:"Programa de Extensão",categoria:"extensao",maxHoras:120,perfil:"social"},
-    projeto_extensao:{nome:"Projeto de Extensão",categoria:"extensao",maxHoras:120,perfil:"social"},
-    curso_extensao:{nome:"Curso/Oficina de Extensão (monitor/ministrante)",categoria:"extensao",maxHoras:120,perfil:"social"},
-    evento_extensao:{nome:"Evento de Extensão (com intervenção externa)",categoria:"extensao",maxHoras:100,perfil:"social"},
-    atividade_campo:{nome:"Atividade de Campo",categoria:"extensao",maxHoras:100,perfil:"social"},
-    publicacao_extensao:{nome:"Publicação ou Produto de Extensão",categoria:"extensao",maxHoras:100,perfil:"social"},
-    prest_servico:{nome:"Prestação de Serviço à Comunidade",categoria:"extensao",maxHoras:100,perfil:"social"},
-    liga_academica:{nome:"Liga Acadêmica",categoria:"extensao",maxHoras:120,perfil:"social"},
-    empresa_junior:{nome:"Empresa Júnior",categoria:"extensao",maxHoras:120,perfil:"mercado"},
-    movimento_estudantil_ext:{nome:"Movimento/Coletivo Estudantil (com extensão)",categoria:"extensao",maxHoras:120,perfil:"social"},
-    open_source_comunidade:{nome:"Open‑source (comunidades externas)",categoria:"extensao",maxHoras:30,perfil:"mercado"},
+  // Extensão
+  accs:{nome:'ACCS – Ação Curricular em Comunidade e Sociedade',categoria:'extensao',maxHoras:330,perfil:'social',comprovacao:'Comprovante de carga horária'},
+  estagio:{nome:'Estágio Supervisionado',categoria:'extensao',maxHoras:100,perfil:'mercado',comprovacao:'Plano de estágio + relatório'},
+  programa_ext:{nome:'Programa de Extensão',categoria:'extensao',maxHoras:120,perfil:'social',comprovacao:'Relatório SIATEX'},
+  projeto_ext:{nome:'Projeto de Extensão',categoria:'extensao',maxHoras:120,perfil:'social',comprovacao:'Relatório SIATEX'},
+  empresa_junior:{nome:'Empresa Júnior',categoria:'extensao',maxHoras:120,perfil:'mercado',comprovacao:'Certificado de participação'},
+  oss_comunidade:{nome:'Contribuição OSS (Comunidade)',categoria:'extensao',maxHoras:30,perfil:'mercado',comprovacao:'Link de commit/merge aprovado'},
 
-    // Ensino (acadêmico)
-    monitoria:{nome:"Monitoria",categoria:"ensino",maxHoras:30,perfil:"academico"},
-    pet:{nome:"PET – Educação Tutorial",categoria:"ensino",maxHoras:30,perfil:"academico"},
-    grupo_estudo:{nome:"Grupo de Estudo",categoria:"ensino",maxHoras:30,perfil:"academico"},
+  // Ensino
+  monitoria:{nome:'Monitoria',categoria:'ensino',maxHoras:30,perfil:'academico',comprovacao:'Certificado ≥20h'},
+  pet:{nome:'PET – Educação Tutorial',categoria:'ensino',maxHoras:30,perfil:'academico',comprovacao:'Certificado ≥20h'},
+  grupo_estudo:{nome:'Grupo de Estudo',categoria:'ensino',maxHoras:30,perfil:'academico',comprovacao:'Certificado ≥20h'},
 
-    // Pesquisa (acadêmico)
-    iniciacao_cientifica:{nome:"Iniciação Científica",categoria:"pesquisa",maxHoras:30,perfil:"academico"},
-    apresentacao_trabalho:{nome:"Apresentação de Trabalho em Evento",categoria:"pesquisa",maxHoras:30,perfil:"academico"},
-    publicacao_periodico:{nome:"Publicação em Periódico",categoria:"pesquisa",maxHoras:30,perfil:"academico"},
-    publicacao_conferencia:{nome:"Publicação em Conferência",categoria:"pesquisa",maxHoras:30,perfil:"academico"},
-    premiacao_pesquisa:{nome:"Premiação em Pesquisa",categoria:"pesquisa",maxHoras:20,perfil:"academico"},
+  // Pesquisa
+  iniciacao_cient:{nome:'Iniciação Científica',categoria:'pesquisa',maxHoras:30,perfil:'academico',comprovacao:'Relatório/Certificado'},
+  artigo_periodico:{nome:'Publicação em Periódico',categoria:'pesquisa',maxHoras:30,perfil:'academico',comprovacao:'Artigo publicado'},
+  artigo_conferencia:{nome:'Publicação em Conferência',categoria:'pesquisa',maxHoras:30,perfil:'academico',comprovacao:'Artigo publicado'},
 
-    // Vivência Profissional (mercado)
-    gestao_redes:{nome:"Gestão de Redes Acadêmicas",categoria:"vivencia",maxHoras:30,perfil:"mercado"},
-    certificacao_tech:{nome:"Certificação Tecnológica",categoria:"vivencia",maxHoras:30,perfil:"mercado"},
-    treinamento_prof:{nome:"Treinamento Profissional",categoria:"vivencia",maxHoras:30,perfil:"mercado"},
-    competicao_academica:{nome:"Competição Acadêmica UFBA",categoria:"vivencia",maxHoras:60,perfil:"mercado"},
-    open_source_sti:{nome:"Contribuição open‑source STI/UFBA",categoria:"vivencia",maxHoras:30,perfil:"mercado"},
+  // Vivência Profissional
+  treinamento_prof:{nome:'Treinamento Profissional',categoria:'vivencia',maxHoras:30,perfil:'mercado',comprovacao:'Certificado'},
+  certificacao_tech:{nome:'Certificação Tecnológica',categoria:'vivencia',maxHoras:30,perfil:'mercado',comprovacao:'Certificado'},
+  gestao_redes:{nome:'Gestão de Redes Acadêmicas',categoria:'vivencia',maxHoras:30,perfil:'mercado',comprovacao:'Declaração docente'},
 
-    // Eventos Técnicos (social)
-    evento_tecnico:{nome:"Congresso/Seminário/Workshop",categoria:"eventos",maxHoras:30,perfil:"social"},
-    sociedade_cientifica:{nome:"Associação em Sociedade Científica",categoria:"eventos",maxHoras:10,perfil:"academico"},
-    premiacao_olimpiadas:{nome:"Premiação em Olimpíadas/Maratonas",categoria:"eventos",categoriasAlternativas:["vivencia"],maxHoras:30,perfil:"academico"},
+  // Eventos Técnicos
+  congresso:{nome:'Congresso / Workshop',categoria:'eventos',maxHoras:30,perfil:'academico',comprovacao:'Certificado'},
+  premiacao_olimp:{nome:'Premiação em Olimpíadas/Maratonas',categoria:'eventos',categoriasAlternativas:['vivencia'],maxHoras:30,perfil:'academico',comprovacao:'Certificado de premiação'},
 
-    // Intervenção Organizacional (mercado)
-    organizacao_evento:{nome:"Organização de Evento",categoria:"organizacional",maxHoras:30,perfil:"mercado"},
-    ministrante:{nome:"Ministrante de Curso",categoria:"organizacional",maxHoras:30,perfil:"mercado"},
-    solucao_tech:{nome:"Desenvolvimento de Solução Tecnológica",categoria:"organizacional",maxHoras:30,perfil:"mercado"},
-    adm_colegiado:{nome:"Atuação Administrativa (Colegiado/IC)",categoria:"organizacional",maxHoras:20,perfil:"mercado"},
+  // Organizacional
+  org_evento:{nome:'Organização de Evento',categoria:'organizacional',maxHoras:30,perfil:'mercado',comprovacao:'Declaração comissão'},
+  solucao_tech:{nome:'Desenvolvimento de Solução Tecnológica',categoria:'organizacional',maxHoras:30,perfil:'mercado',comprovacao:'Relatório / registro'},
 
-    // Representação Estudantil (social)
-    representacao_discente:{nome:"Representação Discente (CA/DA/DCE)",categoria:"representacao",maxHoras:30,perfil:"social"},
-    representacao_unidade:{nome:"Representação em Colegiado/Depart.",categoria:"representacao",maxHoras:30,perfil:"social"},
-    comissao_eleitoral:{nome:"Comissão Eleitoral",categoria:"representacao",maxHoras:10,perfil:"social"},
-    representacao_sociedade:{nome:"Representação em Sociedade Científica",categoria:"representacao",maxHoras:30,perfil:"academico"},
+  // Representação
+  rep_discente:{nome:'Representação Discente (CA/DCE)',categoria:'representacao',maxHoras:30,perfil:'social',comprovacao:'Ata + declaração'},
+  rep_sociedade:{nome:'Representação em Sociedade Científica',categoria:'representacao',maxHoras:30,perfil:'academico',comprovacao:'Declaração da sociedade'},
 
-    // Formação Interdisciplinar (geral)
-    curso_idioma:{nome:"Curso de Idiomas (nível interm.+)",categoria:"interdisciplinar",maxHoras:30,perfil:"geral"},
-    certificacao_idioma:{nome:"Certificação de Proficiência",categoria:"interdisciplinar",maxHoras:20,perfil:"geral"},
-    disciplina_externa:{nome:"Disciplina Fora da Matriz",categoria:"interdisciplinar",maxHoras:30,perfil:"geral"},
+  // Interdisciplinar
+  curso_idioma:{nome:'Curso de Idiomas',categoria:'interdisciplinar',maxHoras:30,perfil:'geral',comprovacao:'Certificado'},
+  certificacao_idioma:{nome:'Certificação de Proficiência',categoria:'interdisciplinar',maxHoras:20,perfil:'geral',comprovacao:'Certificado'},
 
-    // Outros (geral)
-    atividade_fisica:{nome:"Atividades Físicas/Esportivas",categoria:"outros",maxHoras:20,perfil:"geral"},
-    atividade_cultural:{nome:"Atividades Culturais",categoria:"outros",maxHoras:20,perfil:"geral"},
-    doacao_sangue:{nome:"Doação de Sangue",categoria:"outros",maxHoras:10,perfil:"geral"},
-    mesario:{nome:"Mesário (Eleições)",categoria:"outros",maxHoras:10,perfil:"geral"}
+  // Outros
+  atividade_fisica:{nome:'Atividade Física / Esportiva',categoria:'outros',maxHoras:20,perfil:'geral',comprovacao:'Certificado'},
+  atividade_cultural:{nome:'Atividade Cultural',categoria:'outros',maxHoras:20,perfil:'geral',comprovacao:'Certificado'}
 };
 
-const limitesCategorias={extensao:330,ensino:30,pesquisa:30,vivencia:30,eventos:30,organizacional:30,representacao:30,interdisciplinar:30,outros:20};
-const nomesCategorias={extensao:"Extensão",ensino:"Ensino",pesquisa:"Pesquisa",vivencia:"Vivência Profissional",eventos:"Eventos Técnicos",organizacional:"Intervenção Organizacional",representacao:"Representação Estudantil",interdisciplinar:"Formação Interdisciplinar",outros:"Outros"};
+const limitesCat={extensao:330,ensino:30,pesquisa:30,vivencia:30,eventos:30,organizacional:30,representacao:30,interdisciplinar:30,outros:20};
+const nomesCat={extensao:'Extensão',ensino:'Ensino',pesquisa:'Pesquisa',vivencia:'Vivência Profissional',eventos:'Eventos Técnicos',organizacional:'Intervenção Organizacional',representacao:'Representação Estudantil',interdisciplinar:'Formação Interdisciplinar',outros:'Outros'};
 
-/**********************  ESTADO **********************/
-let atividadesRealizadas=[];
-let pending=null; // escolha pendente para categoria
-let alertsMsgs=[]; // mensagens pontuais (ex: limite atingido)
-let perfisSelecionados=[];
+/*********************** STATE ***********************/
+let registros=[];let pendente=null;let perfisMarcados=[];let alertaStack=[];
 
-/**********************  UTILIDADES **********************/
-function horasJaRealizadasDoTipo(tipo){return atividadesRealizadas.filter(a=>a.tipo===tipo).reduce((s,a)=>s+a.horas,0);}    
+/*********************** HELPERS ***********************/
+const somaCat=()=>{const h={};Object.keys(limitesCat).forEach(c=>h[c]=0);registros.forEach(r=>h[r.categoria]+=r.horas);return h;};
+const horasTipo=t=>registros.filter(r=>r.tipo===t).reduce((s,r)=>s+r.horas,0);
 
-function horasPorCategoria(){const h={};Object.keys(limitesCategorias).forEach(c=>h[c]=0);atividadesRealizadas.forEach(a=>h[a.categoria]+=a.horas);return h;}
+/*********************** BUILD UI ***********************/
+function montarSelect(){const sel=document.getElementById('activityType');const grupos={};Object.entries(atividades).forEach(([k,a])=>{if(!grupos[a.categoria])grupos[a.categoria]=[];grupos[a.categoria].push({key:k,...a});});Object.keys(grupos).forEach(cat=>{const og=document.createElement('optgroup');og.label=nomesCat[cat];grupos[cat].sort((x,y)=>x.nome.localeCompare(y.nome)).forEach(a=>{const op=document.createElement('option');op.value=a.key;op.textContent=a.nome;og.appendChild(op);});sel.appendChild(og);});}
+function montarPerfis(){const box=document.getElementById('perfilOptions');Object.entries(perfisEnum).forEach(([k,lab])=>{const id='p_'+k;const cb=document.createElement('input');cb.type='checkbox';cb.id=id;cb.value=k;cb.addEventListener('change',()=>{cb.checked?perfisMarcados.push(k):perfisMarcados=perfisMarcados.filter(p=>p!==k);atualizarSugestoes();});const lb=document.createElement('label');lb.textContent=lab;lb.htmlFor=id;lb.className='perfil-option';box.appendChild(cb);box.appendChild(lb);});}
+function montarLegenda(){const div=document.getElementById('legendBox');div.innerHTML='<h3 style="font-weight:600;margin-bottom:8px">📄 Legenda de Comprovantes</h3>'+Object.values(atividades).map(a=>`<div class="legend-card"><div class="activity-header"><span class="activity-title">${a.nome}</span></div><div style="font-size:.82em;color:#4a5568"><strong>Categoria:</strong> ${nomesCat[a.categoria]}</div><div style="font-size:.8em;color:#555"><strong>Comprovação:</strong> ${a.comprovacao}</div></div>`).join('');}
 
-/**********************  POPULAÇÃO INICIAL **********************/
-function createPerfilOptions(){const div=document.getElementById('perfilOptions');Object.entries(perfisEnum).forEach(([k,label])=>{const id="perfil_"+k;const cb=document.createElement('input');cb.type='checkbox';cb.id=id;cb.value=k;cb.addEventListener('change',()=>{if(cb.checked){perfisSelecionados.push(k);}else{perfisSelecionados=perfisSelecionados.filter(p=>p!==k);}displaySuggestions();});const lab=document.createElement('label');lab.htmlFor=id;lab.textContent=label;lab.className='perfil-option';div.appendChild(cb);div.appendChild(lab);});}
+/*********************** RENDER FUNCTIONS ***********************/
+function renderAtividades(){const c=document.getElementById('activities');if(!registros.length){c.innerHTML='<p style="color:#718096;font-style:italic;">Nenhuma atividade adicionada.</p>';return;}c.innerHTML=registros.map(a=>`<div class="activity-card"><div class="activity-header"><span class="activity-title">${a.nome}</span><span class="badge">${a.horas}h</span><button class="remove-btn btn-danger" onclick="remover(${a.id})">×</button></div><div style="font-size:.82em;color:#4a5568"><strong>Categoria:</strong> ${nomesCat[a.categoria]}</div><div style="font-size:.8em;color:#555"><strong>Comprovação:</strong> ${a.comprovacao}</div>${a.descricao?`<div style="font-size:.8em;color:#4a5568;margin-top:4px"><strong>Descrição:</strong> ${a.descricao}</div>`:''}</div>`).join('');}
+function renderProgresso(){const h=somaCat();const total=Object.values(h).reduce((s,v)=>s+v,0);const cont=document.getElementById('progressBars');cont.innerHTML=`<div class="progress-row"><div class="progress-label">Total Geral: ${total}/430h (${Math.round(total/430*100)}%)</div><div class="bar-bg"><div class="bar-fill" style="width:${Math.min(total/430*100,100)}%"></div></div></div>`+Object.keys(limitesCat).map(cat=>{const perc=Math.round(h[cat]/limitesCat[cat]*100);return`<div class="progress-row"><div class="progress-label">${nomesCat[cat]}: ${h[cat]}/${limitesCat[cat]}h (${perc}%)</div><div class="bar-bg"><div class="bar-fill" style="width:${Math.min(perc,100)}%"></div></div></div>`}).join('');}
+function atualizarSugestoes(){const w=document.getElementById('suggestions');const l=document.getElementById('suggestionsList');const msgs=[...alertaStack];alertaStack.length=0;const h=somaCat();Object.keys(h).forEach(c=>{if(h[c]>limitesCat[c])msgs.push(`⚠️ Excedeu <strong>${nomesCat[c]}</strong> em ${h[c]-limitesCat[c]}h.`);});const outras=Object.keys(h).filter(c=>c!=='extensao').reduce((s,c)=>s+h[c],0);if(outras>=LIMITE_OUTRAS)msgs.push('🔒 Limite de 100h da Categoria 2. Apenas Extensão é válida.');if(perfisMarcados.length){const candidatos=Object.entries(atividades).filter(([k,a])=>perfisMarcados.includes(a.perfil)&&horasTipo(k)<a.maxHoras&&(a.categoria==='extensao'||outras<LIMITE_OUTRAS));candidatos.sort(([,a],[,b])=>horasTipo(a.key)-horasTipo(b.key));const top=candidatos.slice(0,6).map(([,a])=>`• ${a.nome} – até ${a.maxHoras-horasTipo(a.key)}h`);if(top.length)msgs.push('<strong>Sugestões para seu perfil:</strong><br>'+top.join('<br>'));}w.style.display=msgs.length?'block':'none';l.innerHTML=msgs.map(m=>`<div class="suggestion-item">${m}</div>`).join('');}
+function drawAll(){renderAtividades();renderProgresso();atualizarSugestoes();}
 
-function populateActivitySelect(){const sel=document.getElementById('activityType');const grupos={};Object.entries(atividades).forEach(([key,a])=>{if(!grupos[a.categoria])grupos[a.categoria]=[];grupos[a.categoria].push({key,...a});});Object.keys(grupos).forEach(cat=>{const og=document.createElement('optgroup');og.label=nomesCategorias[cat];grupos[cat].sort((x,y)=>x.nome.localeCompare(y.nome)).forEach(at=>{const op=document.createElement('option');op.value=at.key;op.textContent=at.nome;og.appendChild(op);});sel.appendChild(og);});}
+/*********************** DECISION BOX ***********************/
+function abrirDecisao(obj){const h=somaCat();const opts=[...obj.opcoes].sort((a,b)=>h[a]-h[b]);const box=document.getElementById('decisionBox');box.innerHTML=`<strong>Alocar "${obj.nome}" (${obj.horas}h):</strong><br>`+opts.map(c=>`<button onclick="pick('${c}')">${nomesCat[c]}</button>`).join(' ')+' <button class="btn-danger" onclick="fecharDecisao()">Cancelar</button>';box.style.display='block';}
+function fecharDecisao(){document.getElementById('decisionBox').style.display='none';}
+function pick(cat){if(pendente){inserir({...pendente,categoria:cat});pendente=null;}fecharDecisao();}
 
-/**********************  ALERTAS & DECISION BOX **********************/
-function addAlert(msg){alertsMsgs.push(msg);displaySuggestions();}
+/*********************** CRUD ***********************/
+function inserir(r){registros.push(r);drawAll();}
+function remover(id){registros=registros.filter(x=>x.id!==id);drawAll();}
+function clearAll(){registros=[];alertaStack=[];drawAll();fecharDecisao();}
 
-function orderedOpcoes(opcoes){const h=horasPorCategoria();return [...opcoes].sort((a,b)=>h[a]-h[b]);}
+/*********************** FORM SUBMIT ***********************/
+document.getElementById('activityForm').addEventListener('submit',e=>{e.preventDefault();const tipo=document.getElementById('activityType').value;const horas=parseInt(document.getElementById('hours').value);const desc=document.getElementById('description').value.trim();if(!tipo||!horas)return;const at=atividades[tipo];const jaTipo=horasTipo(tipo);if(jaTipo>=at.maxHoras){alertaStack.push(`Limite de ${at.maxHoras}h para "${at.nome}" atingido.`);drawAll();return;}const horasAdd=Math.min(horas,at.maxHoras-jaTipo);if(horasAdd<horas)alertaStack.push(`Apenas ${horasAdd}h adicionadas (limite da atividade).`);const h=somaCat();const outras=Object.keys(h).filter(c=>c!=='extensao').reduce((s,c)=>s+h[c],0);if(at.categoria!=='extensao'&&outras>=LIMITE_OUTRAS){alertaStack.push('Categoria 2 em 100h. Insira apenas Extensão.');drawAll();return;}if(at.categoria!=='extensao'&&outras+horasAdd>LIMITE_OUTRAS){alertaStack.push(`Restam apenas ${LIMITE_OUTRAS-outras}h na Categoria 2.`);drawAll();return;}const opcoes=at.categoriasAlternativas?[at.categoria,...at.categoriasAlternativas]:[at.categoria];const base={id:Date.now(),tipo,nome:at.nome,horas:horasAdd,descricao:desc,comprovacao:at.comprovacao,opcoes};if(opcoes.length>1){pendente=base;abrirDecisao(base);}else{inserir({...base,categoria:at.categoria});}e.target.reset();});
 
-function showDecisionBox(obj){const box=document.getElementById('decisionBox');const opcOrdenadas=orderedOpcoes(obj.opcoes);box.innerHTML=`<h3>📌 Onde alocar esta atividade?</h3><p><strong>${obj.nome}</strong> – ${obj.horas}h</p>`+opcOrdenadas.map(c=>`<button onclick="confirmChoice('${c}')">${nomesCategorias[c]}</button>`).join('')+`<button style="background:#ff6b6b" onclick="cancelChoice()">Cancelar</button>`;box.style.display='block';}
-function hideDecisionBox(){document.getElementById('decisionBox').style.display='none';}
-function confirmChoice(cat){if(!pending)return;addActivity({...pending,categoria:cat});pending=null;hideDecisionBox();}
-function cancelChoice(){pending=null;hideDecisionBox();}
-
-/**********************  ATIVIDADES **********************/
-function addActivity(a){atividadesRealizadas.push(a);updateDisplay();}
-function removeActivity(id){atividadesRealizadas=atividadesRealizadas.filter(x=>x.id!==id);updateDisplay();}
-function clearAll(){atividadesRealizadas=[];alertsMsgs=[];updateDisplay();hideDecisionBox();}
-
-/**********************  DISPLAY **********************/
-function displayActivities(){const cont=document.getElementById('activities');if(!atividadesRealizadas.length){cont.innerHTML='<p style="color:#718096;font-style:italic;">Nenhuma atividade adicionada ainda.</p>';return;}cont.innerHTML=atividadesRealizadas.map(a=>`<div class="activity-item"><div class="activity-header"><div class="activity-title">${a.nome}</div><span class="hours-badge">${a.horas}h</span><button class="remove-btn" onclick="removeActivity(${a.id})">×</button></div><div style="font-size:.9em;color:#718096;"><strong>Categoria:</strong> ${nomesCategorias[a.categoria]}</div>${a.descricao?`<div style="font-size:.9em;color:#4a5568;margin-top:5px;"><strong>Descrição:</strong> ${a.descricao}</div>`:''}</div>`).join('');}
-
-function displayProgress(){const cont=document.getElementById('progressBars');const h=horasPorCategoria();const total=Object.values(h).reduce((s,x)=>s+x,0);cont.innerHTML=`<div class="category-progress"><div class="category-name">Total Geral: ${total}/430h (${Math.round(total/430*100)}%)</div><div class="progress-bar"><div class="progress-fill" style="width:${Math.min(total/430*100,100)}%"></div></div></div>`+Object.keys(limitesCategorias).map(cat=>{const perc=Math.round(h[cat]/limitesCategorias[cat]*100);return`<div class="category-progress"><div class="category-name">${nomesCategorias[cat]}: ${h[cat]}/${limitesCategorias[cat]}h (${perc}%)</div><div class="progress-bar"><div class="progress-fill" style="width:${Math.min(perc,100)}%"></div></div></div>`;}).join('');}
-
-function displaySuggestions(){const wrap=document.getElementById('suggestions');const list=document.getElementById('suggestionsList');if(!atividadesRealizadas.length && !alertsMsgs.length){wrap.style.display='none';return;}wrap.style.display='block';const h=horasPorCategoria();let msgs=[...alertsMsgs]; // copy alerts
-// Limite excedido
-Object.keys(limitesCategorias).forEach(c=>{if(h[c]>limitesCategorias[c])msgs.push(`⚠️ Excedeu o limite de <strong>${nomesCategorias[c]}</strong> em ${h[c]-limitesCategorias[c]}h.`);});
-// Recomendações de atividades por perfil
-if(perfisSelecionados.length){const recomendaveis=Object.entries(atividades).filter(([key,a])=>perfisSelecionados.includes(a.perfil)&& horasJaRealizadasDoTipo(key)<a.maxHoras);
-recomendaveis.sort(([,a],[,b])=>horasJaRealizadasDoTipo(a.nome)-horasJaRealizadasDoTipo(b.nome));
-const top=recomendaveis.slice(0,5).map(([,a])=>`• ${a.nome} (${nomesCategorias[a.category||a.categoria]})`);
-if(top.length)msgs.push(`<strong>Ideias para seu perfil:</strong><br>${top.join('<br>')}`);
-}
-list.innerHTML=msgs.map(m=>`<div class="suggestion-item">${m}</div>`).join('');alertsMsgs=[];}
-
-function updateDisplay(){displayActivities();displayProgress();displaySuggestions();}
-
-/**********************  FORM HANDLER **********************/
-document.getElementById('activityForm').addEventListener('submit',e=>{
-    e.preventDefault();
-    const tipo=document.getElementById('activityType').value;if(!tipo)return;
-    const horasInput=parseInt(document.getElementById('hours').value);if(!horasInput)return;
-    const desc=document.getElementById('description').value;
-    const at=atividades[tipo];
-
-    const ja=horasJaRealizadasDoTipo(tipo);
-    const restante=at.maxHoras - ja;
-    if (restante <= 0) {
-        addAlert(`Limite de ${at.maxHoras}h para “${at.nome}” já atingido.`);
-        return;
-    }
-
-    const horasAdd = Math.min(horasInput, restante);
-    if (horasAdd < horasInput) {
-        addAlert(`Só é possível adicionar ${horasAdd}h (máximo por atividade).`);
-    }
-
-    const opcoes = at.categoriasAlternativas ? [at.categoria, ...at.categoriasAlternativas] : [at.categoria];
-    const baseObj = {
-        id: Date.now(),
-        tipo,
-        nome: at.nome,
-        horas: horasAdd,
-        descricao: desc,
-        comprovacao: at.comprovacao,
-        opcoes
-    };
-
-    if (opcoes.length > 1) {
-        pending = baseObj;
-        showDecisionBox({ ...baseObj });
-    } else {
-        addActivity({ ...baseObj, categoria: at.categoria });
-    }
-
-    document.getElementById('activityForm').reset();
-});
-
-// 🚀 Inicialização
-window.onload = () => {
-    populateActivitySelect();
-    createPerfilOptions();
-    updateDisplay();
-};
+/*********************** INIT ***********************/
+window.addEventListener('DOMContentLoaded',()=>{montarSelect();montarPerfis();montarLegenda();drawAll();});
 </script>
 </body>
 </html>
