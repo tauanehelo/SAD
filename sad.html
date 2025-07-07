@@ -74,10 +74,6 @@
             <input id="hours" type="number" min="1" required>
             <small id="hoursHint" style="display:none;color:#4a5568;font-size:.8em"></small>
           </div>
-          <div class="form-group">
-            <label for="description">Descrição (opcional):</label>
-            <textarea id="description" rows="3"></textarea>
-          </div>
           <button type="submit">Adicionar</button><button type="button" class="btn-danger" onclick="clearAll()">Limpar Tudo</button>
         </form>
         <!-- PERFIL & FLEXIBILIDADE -->
@@ -129,70 +125,70 @@ const flexibilidadeLabels = {
 const atividades = [
   /* ======= EXTENSÃO ======= */
   { nome: "ACCS", categoria: "extensao", maxHoras: 100, valorFixo: null, perfil: "Social", comprovacao: "Comprovante de carga horária cumprida", flexibilidade: "meio-flexivel" },
-  { nome: "Estágio supervisionado", categoria: "extensao", maxHoras: 100, valorFixo: 50, perfil: "Mercado", comprovacao: "Plano e relatório assinados", flexibilidade: "rigido" },
+  { nome: "Estágio supervisionado", tipo:"estagio", categoria: "extensao", maxHoras: 100, valorFixo: 50, perfil: "Mercado", comprovacao: "Plano e relatório assinados", flexibilidade: "rigido" },
   { nome: "Programa de Extensão", categoria: "extensao", maxHoras: 120, valorFixo: 60, perfil: "Social", comprovacao: "Comprovante SIATEX-UFBA", flexibilidade: "meio-flexivel" },
   { nome: "Projeto de Extensão", categoria: "extensao", maxHoras: 120, valorFixo: 60, perfil: "Social", comprovacao: "Comprovante SIATEX-UFBA", flexibilidade: "meio-flexivel" },
   { nome: "Curso de Extensão", categoria: "extensao", maxHoras: 120, valorFixo: null, perfil: "Acadêmico", comprovacao: "Certificado ou SIATEX", flexibilidade: "flexivel" },
   { nome: "Atividade de Campo", categoria: "extensao", maxHoras: 100, valorFixo: null, perfil: "Social", comprovacao: "Certificado atividade de campo", flexibilidade: "rigido" },
-  { nome: "Evento Acadêmico-Científico (participação)", categoria: "extensao", maxHoras: 100, valorFixo: 50, perfil: "Acadêmico", comprovacao: "Comprovante de participação", flexibilidade: "rigido" },
-  { nome: "Publicação / Produto Acadêmico", categoria: "extensao", maxHoras: 100, valorFixo: 50, perfil: "Acadêmico", comprovacao: "Comprovante da publicação", flexibilidade: "flexivel" },
-  { nome: "Organização de Evento", categoria: "extensao", maxHoras: 100, valorFixo: 50, perfil: "Acadêmico", comprovacao: "Comissão organizadora", flexibilidade: "rigido" },
+  { nome: "Evento Acadêmico-Científico (participação)", tipo: "eventoAcademico", categoria: "extensao", categoriasAlternativas:["pesquisa"], maxHoras: 100, valorFixo: 50, perfil: "Acadêmico", comprovacao: "Comprovante de participação", flexibilidade: "rigido" },
+  { nome: "Publicação / Produto Acadêmico", categoria: "extensao", categoriasAlternativas:["pesquisa"], maxHoras: 100, valorFixo: 50, perfil: "Acadêmico", comprovacao: "Comprovante da publicação", flexibilidade: "flexivel" },
+  { nome: "Organização de Evento", tipo:"organizacaoEvento", categoria: "extensao", maxHoras: 100, valorFixo: 50, perfil: "Acadêmico", comprovacao: "Comissão organizadora", flexibilidade: "rigido" },
   { nome: "Prestação de Serviço à Comunidade", categoria: "extensao", maxHoras: 100, valorFixo: 50, perfil: "Social", comprovacao: "Comprovante de serviço", flexibilidade: "meio-flexivel" },
   { nome: "Liga Acadêmica", categoria: "extensao", maxHoras: 120, valorFixo: 60, perfil: "Acadêmico", comprovacao: "Certificado de participação", flexibilidade: "meio-flexivel" },
-  { nome: "Empresa Júnior", categoria: "extensao", maxHoras: 120, valorFixo: 60, perfil: "Mercado", comprovacao: "Certificado EJ", flexibilidade: "meio-flexivel" },
+  { nome: "Empresa Júnior", tipo:"empresaJunior", categoria: "extensao", maxHoras: 120, valorFixo: 60, perfil: "Mercado", comprovacao: "Certificado EJ", flexibilidade: "meio-flexivel" },
   { nome: "Movimento Estudantil / Coletivos", categoria: "extensao", maxHoras: 120, valorFixo: 60, perfil: "Social", comprovacao: "Certificado de gestão", flexibilidade: "meio-flexivel" },
   { nome: "Open-source externo (localização / issues)", categoria: "extensao", maxHoras: 30, valorFixo: 10, perfil: "Mercado", comprovacao: "Aceite no issue tracker", flexibilidade: "flexivel" },
   //{ nome: "Voluntariado educacional tecnológico", categoria: "extensao", maxHoras: 20, valorFixo: "50% da carga do certificado", perfil: "Social", comprovacao: "Certificado ≥10h", flexibilidade: "meio-flexivel" },
 
 
   /* ======= OUTRAS – ENSINO ======= */
-  { nome: "Monitoria", categoria: "ensino", maxHoras: 30, valorFixo: 20, perfil: "Acadêmico", comprovacao: "Certificado (≥20h)", flexibilidade: "rigido" },
-  { nome: "PET / GET (Educação Tutorial)", categoria: "ensino", maxHoras: 30, valorFixo: 20, perfil: "Acadêmico", comprovacao: "Certificado (≥20h)", flexibilidade: "meio-flexivel" },
-  { nome: "Grupo de Estudo", categoria: "ensino", maxHoras: 30, valorFixo: 10, perfil: "Acadêmico", comprovacao: "Certificado (≥20h)", flexibilidade: "meio-flexivel" },
+  { nome: "Monitoria", tipo: "monitoria", categoria: "ensino", maxHoras: 30, valorFixo: 20, perfil: "Acadêmico", comprovacao: "Certificado (≥20h)", flexibilidade: "rigido" },
+  { nome: "PET / GET (Educação Tutorial)", tipo:"pet", categoria: "ensino", maxHoras: 30, valorFixo: 20, perfil: "Acadêmico", comprovacao: "Certificado (≥20h)", flexibilidade: "meio-flexivel" },
+  { nome: "Grupo de Estudo", tipo:"grupoEstudo", categoria: "ensino", maxHoras: 30, valorFixo: 10, perfil: "Acadêmico", comprovacao: "Certificado (≥20h)", flexibilidade: "meio-flexivel" },
 
   /* ======= OUTRAS – PESQUISA ======= */
-  { nome: "Iniciação Científica", categoria: "pesquisa", maxHoras: 30, valorFixo: 20, perfil: "Acadêmico", comprovacao: "Certificado (≥20h)", flexibilidade: "meio-flexivel" },
+  { nome: "Iniciação Científica", tipo:"iniciacaoCientifica", categoria: "pesquisa", maxHoras: 30, valorFixo: 20, perfil: "Acadêmico", comprovacao: "Certificado (≥20h)", flexibilidade: "meio-flexivel" },
   { nome: "Estudo Secundário (Revisão/Mapeamento)", categoria: "pesquisa", maxHoras: 30, valorFixo: 10, perfil: "Acadêmico", comprovacao: "Declaração orientador", flexibilidade: "flexivel" },
-  { nome: "Apresentação de Trabalho em Evento", categoria: "pesquisa", maxHoras: 30, valorFixo: 10, perfil: "Acadêmico", comprovacao: "Comprovante de apresentação", flexibilidade: "rigido" },
-  { nome: "Artigo em Periódico", categoria: "pesquisa", maxHoras: 30, valorFixo: 30, perfil: "Acadêmico", comprovacao: "Cópia da publicação", flexibilidade: "flexivel" },
-  { nome: "Artigo em Conferência N/I", categoria: "pesquisa", maxHoras: 30, valorFixo: 20, perfil: "Acadêmico", comprovacao: "Cópia dos anais", flexibilidade: "flexivel" },
-  { nome: "Artigo em Conferência Regional", categoria: "pesquisa", maxHoras: 30, valorFixo: 20, perfil: "Acadêmico", comprovacao: "Cópia dos anais", flexibilidade: "flexivel" },
+  { nome: "Apresentação de Trabalho em Evento", categoria: "pesquisa", categoriasAlternativas:["extensao"], maxHoras: 30, valorFixo: 10, perfil: "Acadêmico", comprovacao: "Comprovante de apresentação", flexibilidade: "rigido" },
+  { nome: "Artigo em Periódico", tipo:"artigoPeriodico", categoria: "pesquisa", categoriasAlternativas:["extensao"], maxHoras: 30, valorFixo: 30, perfil: "Acadêmico", comprovacao: "Cópia da publicação", flexibilidade: "flexivel" },
+  { nome: "Artigo em Conferência N/I", tipo:"artigoConferencia", categoria: "pesquisa", categoriasAlternativas:["extensao"], maxHoras: 30, valorFixo: 20, perfil: "Acadêmico", comprovacao: "Cópia dos anais", flexibilidade: "flexivel" },
+  { nome: "Artigo em Conferência Regional", categoria: "pesquisa", categoriasAlternativas:["extensao"], maxHoras: 30, valorFixo: 20, perfil: "Acadêmico", comprovacao: "Cópia dos anais", flexibilidade: "flexivel" },
   { nome: "Premiação de Pesquisa", categoria: "pesquisa", maxHoras: 30, valorFixo: 20, perfil: "Acadêmico", comprovacao: "Documento de premiação", flexibilidade: "rigido" },
 
   /* ======= OUTRAS – VIVÊNCIA PROFISSIONAL ======= */
   { nome: "Gestão de Redes Acadêmicas", categoria: "vivencia", maxHoras: 30, valorFixo: 20, perfil: "Mercado", comprovacao: "Relatório professor", flexibilidade: "meio-flexivel" },
   { nome: "Open-source STI/UFBA", categoria: "vivencia", maxHoras: 30, valorFixo: 10, perfil: "Mercado", comprovacao: "Declaração orientador", flexibilidade: "flexivel" },
-  { nome: "Certificação Técnica", categoria: "vivencia", maxHoras: 30, valorFixo: 30, perfil: "Mercado", comprovacao: "Certificado oficial", flexibilidade: "flexivel" },
+  { nome: "Certificação Técnica", tipo:"certificacao", categoria: "vivencia", maxHoras: 30, valorFixo: 30, perfil: "Mercado", comprovacao: "Certificado oficial", flexibilidade: "flexivel" },
   //{ nome: "Curso de Capacitação Profissional", categoria: "vivencia", maxHoras: 30, valorFixo: "50% da carga do curso", perfil: "Mercado", comprovacao: "Certificado ou declaração", flexibilidade: "flexivel" },
   { nome: "Competição Acadêmica (GRUPRO)", categoria: "vivencia", maxHoras: 60, valorFixo: 20, perfil: "Mercado", comprovacao: "Certificado de participação", flexibilidade: "rigido" },
-  { nome: "Olimpíada / Maratona de Computação", categoria: "vivencia", maxHoras: 60, valorFixo: 20, perfil: "Mercado", comprovacao: "Certificado de participação", flexibilidade: "rigido" },
+  { nome: "Participação em Olimpíada / Maratona de Computação", categoria: "vivencia", maxHoras: 60, valorFixo: 20, perfil: "Mercado", comprovacao: "Certificado de participação", flexibilidade: "rigido" },
 
   /* ======= OUTRAS – EVENTOS TÉCNICOS CIENTÍFICOS ======= */
-  { nome: "Congressos / Semanas / Workshops", categoria: "eventos", maxHoras: 30, valorFixo: 10, perfil: "Acadêmico", comprovacao: "Certificado participação", flexibilidade: "rigido" },
+  { nome: "Congressos / Semanas / Workshops", tipo:"congresso", categoria: "eventos", maxHoras: 30, valorFixo: 10, perfil: "Acadêmico", comprovacao: "Certificado participação", flexibilidade: "rigido" },
   { nome: "Associação em Sociedade Científica", categoria: "eventos", maxHoras: 10, valorFixo: 5, perfil: "Acadêmico", comprovacao: "Carteira de sócio", flexibilidade: "flexivel" },
-  { nome: "Premiação em Olimpíada/Maratona", categoria: "eventos", maxHoras: 30, valorFixo: 10, perfil: "Acadêmico", comprovacao: "Certificado de premiação", flexibilidade: "rigido" },
+  { nome: "Premiação em Olimpíada/Maratona", categoria: "eventos", categoriasAlternativas:["vivencia"], maxHoras: 30, valorFixo: 10, perfil: "Acadêmico", comprovacao: "Certificado de premiação", flexibilidade: "rigido" },
 
   /* ======= OUTRAS – INTERVENÇÃO ORGANIZACIONAL ======= */
-  { nome: "Comissão Organizadora de Evento", categoria: "organizacional", maxHoras: 30, valorFixo: 10, perfil: "Acadêmico", comprovacao: "Certificado/declaração", flexibilidade: "rigido" },
-  { nome: "Ministrante de Curso/Oficina", categoria: "organizacional", maxHoras: 30, valorFixo: 15, perfil: "Acadêmico", comprovacao: "Certificado de ministrante", flexibilidade: "rigido" },
-  { nome: "Coordenação de Congresso/Simpósio", categoria: "organizacional", maxHoras: 30, valorFixo: 20, perfil: "Acadêmico", comprovacao: "Certificado", flexibilidade: "rigido" },
+  { nome: "Comissão Organizadora de Evento", categoria: "organizacional", categoriasAlternativas:["extensao"], maxHoras: 30, valorFixo: 10, perfil: "Acadêmico", comprovacao: "Certificado/declaração", flexibilidade: "rigido" },
+  { nome: "Ministrante de Curso/Oficina", categoria: "organizacional", categoriasAlternativas:["extensao"], maxHoras: 30, valorFixo: 15, perfil: "Acadêmico", comprovacao: "Certificado de ministrante", flexibilidade: "rigido" },
+  { nome: "Coordenação de Congresso/Simpósio", categoria: "organizacional", categoriasAlternativas:["extensao"], maxHoras: 30, valorFixo: 20, perfil: "Acadêmico", comprovacao: "Certificado", flexibilidade: "rigido" },
   { nome: "Desenvolvimento de Solução Tecnológica", categoria: "organizacional", maxHoras: 30, valorFixo: 20, perfil: "Mercado", comprovacao: "Registro/autoria", flexibilidade: "flexivel" },
   { nome: "Atuação Administrativa no Instituto", categoria: "organizacional", maxHoras: 30, valorFixo: 20, perfil: "Acadêmico", comprovacao: "Relatório professor", flexibilidade: "rigido" },
 
   /* ======= OUTRAS – REPRESENTAÇÃO ESTUDANTIL ======= */
   { nome: "Mandato em CA/DA/DCE", categoria: "representacao", maxHoras: 30, valorFixo: 30, perfil: "Social", comprovacao: "Ata de posse + declaração", flexibilidade: "meio-flexivel" },
-  { nome: "Representação em Colegiado/Departamento", categoria: "representacao", maxHoras: 30, valorFixo: 30, perfil: "Social", comprovacao: "Ata de eleição + declaração", flexibilidade: "meio-flexivel" },
+  { nome: "Representação em Colegiado/Departamento", tipo:"representacao", categoria: "representacao", maxHoras: 30, valorFixo: 30, perfil: "Social", comprovacao: "Ata de eleição + declaração", flexibilidade: "meio-flexivel" },
   { nome: "Comissão Eleitoral Estudantil", categoria: "representacao", maxHoras: 10, valorFixo: 5, perfil: "Social", comprovacao: "Ata de apuração", flexibilidade: "rigido" },
   { nome: "Representação em Sociedade Científica", categoria: "representacao", maxHoras: 30, valorFixo: 30, perfil: "Acadêmico", comprovacao: "Declaração da sociedade", flexibilidade: "flexivel" },
 
   /* ======= OUTRAS – FORMAÇÃO INTERDISCIPLINAR ======= */
-  { nome: "Curso de Idiomas (≥ Intermediário)", categoria: "interdisciplinar", maxHoras: 30, valorFixo: 30, perfil: "Geral", comprovacao: "Certificado com carga", flexibilidade: "rigido" },
-  { nome: "Certificação de Proficiência", categoria: "interdisciplinar", maxHoras: 30, valorFixo: 20, perfil: "Acadêmico", comprovacao: "Certificado oficial", flexibilidade: "rigido" },
+  { nome: "Curso de Idiomas (≥ Intermediário)", categoria: "interdisciplinar", maxHoras: 30, valorFixo: 30, perfil: "Geral", comprovacao: "Certificado com carga", flexibilidade: "flexivel" },
+  { nome: "Certificação de Proficiência", categoria: "interdisciplinar", maxHoras: 30, valorFixo: 20, perfil: "Acadêmico", comprovacao: "Certificado oficial", flexibilidade: "flexivel" },
   { nome: "Disciplina Optativa Externa", categoria: "interdisciplinar", maxHoras: 30, valorFixo: 30, perfil: "Acadêmico", comprovacao: "Histórico escolar", flexibilidade: "rigido" },
 
   /* ======= OUTRAS – OUTROS ======= */
-  { nome: "Atividade Física Orientada", categoria: "outros", maxHoras: 20, valorFixo: 5, perfil: "Geral", comprovacao: "Declaração da academia", flexibilidade: "rigido" },
-  { nome: "Atividade Cultural", categoria: "outros", maxHoras: 20, valorFixo: 10, perfil: "Geral", comprovacao: "Declaração da instituição", flexibilidade: "rigido" },
+  { nome: "Atividade Física Orientada", categoria: "outros", maxHoras: 20, valorFixo: 5, perfil: "Geral", comprovacao: "Declaração da academia", flexibilidade: "meio-flexivel" },
+  { nome: "Atividade Cultural", categoria: "outros", maxHoras: 20, valorFixo: 10, perfil: "Geral", comprovacao: "Declaração da instituição", flexibilidade: "flexivel" },
   { nome: "Doação de Sangue", categoria: "outros", maxHoras: 15, valorFixo: 5, perfil: "Geral", comprovacao: "Atestado de doação", flexibilidade: "flexivel" },
   { nome: "Mesário em Eleição Oficial", categoria: "outros", maxHoras: 10, valorFixo: 5, perfil: "Social", comprovacao: "Declaração Justiça Eleitoral", flexibilidade: "rigido" }
 ];
@@ -209,11 +205,11 @@ const regrasCombinacao = {
   monitoria: ['iniciacaoCientifica', 'grupoEstudo', 'pet'],
   iniciacaoCientifica: ['monitoria', 'artigoPeriodico', 'artigoConferencia', 'congresso'],
   pet: ['monitoria', 'grupoEstudo', 'iniciacaoCientifica'],
-  estagio: ['empresaJunior', 'treinamento', 'certificacao'],
-  empresaJunior: ['estagio', 'organizacaoEvento', 'treinamento'],
+  estagio: ['empresaJunior', 'certificacao'],
+  empresaJunior: ['estagio', 'organizacaoEvento', 'certificacao'],
   representacao: ['organizacaoEvento', 'eventoAcademico', 'accs'],
   artigoPeriodico: ['artigoConferencia', 'congresso', 'iniciacaoCientifica'],
-  certificacao: ['treinamento', 'estagio', 'empresaJunior'],
+  certificacao: [ 'estagio', 'empresaJunior'],
   organizacaoEvento: ['representacao', 'empresaJunior', 'eventoAcademico']
 };
 
@@ -246,23 +242,19 @@ function associateSuggestions() {
   const feitas = registros.map(r => r.tipo);
   const relacionadas = new Set();
   feitas.forEach(t => {
-    if (regrasCombinacao[t]) regrasCombinacao[t].forEach(r => relacionadas.add(r));
+    tipo = atividades[t].tipo;
+    if (regrasCombinacao[tipo]) regrasCombinacao[tipo].forEach(r => relacionadas.add(r));
   });
   // remove já feitas / sem horas / fora das prefs
   const soma = summariseData();
   const outrasTotal = Object.keys(soma).filter(c => c !== 'extensao').reduce((s, c) => s + soma[c], 0);
-  return [...relacionadas].filter(k => {
-    const a = atividades[k];
+  return [...relacionadas].filter(filterAtv);
+}
+function filterAtv(k){
+  const a = atividades.filter(r => r.tipo === k);
     // já atingiu máximo?
     if (horasPorTipo(k) >= a.maxHoras) return false;
-    // categoria 2 cheia?
-    if (a.categoria !== 'extensao' && outrasTotal >= LIMITE_OUTRAS) return false;
-    // perfis marcados?
-    if (perfisMarcados.length && !perfisMarcados.includes(a.perfil)) return false;
-    // flex prefs?
-    if (flexPrefs.length && !flexPrefs.includes(a.flexibilidade)) return false;
     return true;
-  });
 }
 
 function horasPorTipo(t) {
@@ -281,11 +273,10 @@ function buildSelect() {
   });
   Object.keys(grupos).forEach(cat => {
     const og = document.createElement('optgroup');
-    og.label = nomesCat[cat];
     grupos[cat].sort((x, y) => x.nome.localeCompare(y.nome)).forEach(a => {
       const op = document.createElement('option');
       op.value = a.key;
-      op.textContent = `${a.nome} (${flexibilidadeLabels[a.flexibilidade]})`;
+      op.textContent = `${a.nome}`;
       og.appendChild(op);
     });
     sel.appendChild(og);
@@ -368,7 +359,7 @@ function renderActivities() {
           <span class="badge">${a.horas}h</span>
           <button class="btn-danger" style="font-size:.8em;padding:3px 8px;border-radius:12px;margin-left:8px" onclick="del(${a.id})">×</button>
         </div>
-        <div style="font-size:.8em"><strong>Categoria:</strong> ${nomesCat[a.categoria]} <span class="tag">${flexibilidadeLabels[a.flexibilidade]}</span></div>
+        <div style="font-size:.8em"><strong>Categoria:</strong> ${nomesCat[a.categoria]} </div>
         <div style="font-size:.8em;color:#555"><strong>Comprovante:</strong> ${a.comprovacao}</div>
       </div>`;
     })
@@ -400,12 +391,28 @@ function updateSuggestions() {
     if (h[c] > limitesCat[c]) msgs.push(`⚠️ Excedeu <strong>${nomesCat[c]}</strong> em ${h[c] - limitesCat[c]}h.`);
   });
   const outras = Object.keys(h).filter(c => c !== 'extensao').reduce((s, c) => s + h[c], 0);
-  if (outras >= LIMITE_OUTRAS) msgs.push('🔒 Categoria 2 completa (100h). Apenas Extensão disponível.');
+  if (outras >= LIMITE_OUTRAS) msgs.push('🔒 Categoria 2 completa (100h). Conclua apenas atividades de Extensão.');
+  const ext = Object.keys(h).filter(c => c == 'extensao').reduce((s, c) => s + h[c], 0);
+  if (ext >= 330) msgs.push('🔒 Extensão completa (330h). Conclua apenas atividades da Categoria 2.');
 
   // Sugestões associativas
   const assoc = associateSuggestions();
-  if (assoc.length) {
-    msgs.push('<strong>Sugestões associadas:</strong><br>' + assoc.map(k => '• ' + atividades[k].nome).join('<br>'));
+  console.log(assoc);
+  if (assoc.length) { 
+    msgs.push('<strong>Sugestões associadas:</strong><br>')
+    assoc.map(k => {
+    atv = atividades.filter(r => r.tipo === k)
+    atv=atv[0]
+    pref = flexPrefs.filter(r => r == atv.flexibilidade)
+    nome = atv.nome
+    if ((atv.categoria =="extensao" && ext<330) || (atv.categoria !== "extensao" && outras<LIMITE_OUTRAS)){
+      if (!pref.length) {
+        msgs.push(`• ${nome} <span class="tag">${flexibilidadeLabels[atv.flexibilidade]}</span> <br>    Esta atividade requer horário <span class="tag">${flexibilidadeLabels[atv.flexibilidade]}</span> que não está nas suas preferências.`);
+      } else {
+        msgs.push(`• ${nome} <span class="tag">${flexibilidadeLabels[atv.flexibilidade]}</span> <br>`)
+      }
+    }
+  })
   }
   wrap.style.display = msgs.length ? 'block' : 'none';
   list.innerHTML = msgs.map(m => `<div class="suggestion-item">${m}</div>`).join('');
@@ -515,9 +522,13 @@ document.getElementById('activityForm').addEventListener('submit', e => {
     redraw(); return;
   }
 
-  // preferências de flexibilidade – respeitar escolha do aluno
-  if (flexPrefs.length && !flexPrefs.includes(at.flexibilidade)) {
-    alertas.push(`Esta atividade requer horário ${flexibilidadeLabels[at.flexibilidade]} que não está nas suas preferências.`);
+    // cextensão limite
+  const extTotal = Object.keys(catTotal).filter(c => c == 'extensao').reduce((s, c) => s + catTotal[c], 0);
+  if (at.categoria == 'extensao' && extTotal >= 330) {
+    alertas.push('Extensão completa. Apenas Categoria 2 aceita.'); redraw(); return; }
+  if (at.categoria == 'extensao' && extTotal + horas > 330) {
+    alertas.push(`Restam ${330 - extTotal}h em Extensão.`);
+    redraw(); return;
   }
 
   const opcoes = at.categoriasAlternativas ? [at.categoria, ...at.categoriasAlternativas] : [at.categoria];
