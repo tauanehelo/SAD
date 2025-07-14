@@ -236,7 +236,8 @@ function classifyActivity(key) {
   const a = atividades[key];
   atividades.forEach(r => {
     if (r.categoria==a.categoria) r.score+=2;
-    if (flexPrefs.includes(r.perfil)) r.score+=5;
+    if (r.perfil=="Geral") r.score+=1;
+    if (perfisMarcados.includes(r.perfil)) r.score+=5;
     if (flexPrefs.includes(r.flexibilidade)) r.score+=4;
   });
 }
@@ -393,32 +394,39 @@ function updateSuggestions() {
   // Excesso de horas por categoria
   const h = summariseData();
   Object.keys(h).forEach(c => {
-    if (h[c] > limitesCat[c]) msgs.push(`⚠️ Excedeu <strong>${nomesCat[c]}</strong> em ${h[c] - limitesCat[c]}h.`);
+    if (h[c] > limitesCat[c]) msgs.push(`⚠️ Excedeu <strong>${nomesCat[c]}</strong> em ${h[c] - limitesCat[c]}h. <br> `);
   });
   const outras = Object.keys(h).filter(c => c !== 'extensao').reduce((s, c) => s + h[c], 0);
-  if (outras >= LIMITE_OUTRAS) msgs.push('🔒 Categoria 2 completa (100h). Conclua apenas atividades de Extensão.');
+  if (outras >= LIMITE_OUTRAS) msgs.push('🔒 Categoria 2 completa (100h). Conclua apenas atividades de Extensão.<br> ');
   const ext = Object.keys(h).filter(c => c == 'extensao').reduce((s, c) => s + h[c], 0);
-  if (ext >= 330) msgs.push('🔒 Extensão completa (330h). Conclua apenas atividades da Categoria 2.');
+  if (ext >= 330) msgs.push('🔒 Extensão completa (330h). Conclua apenas atividades da Categoria 2.<br> ');
 
   // Sugestões associativas
   const assoc = associateSuggestions();
+  atvss=[...atividades].filter(filterAtv)
   if (assoc.length) { 
     msgs.push('<strong>Sugestões associadas:</strong><br>')
     assoc.map(k => {
-    atv = atividades.filter(r => r.tipo === k)
-    atv=atv[0]
-    pref = flexPrefs.filter(r => r == atv.flexibilidade)
-    nome = atv.nome
-    if ((atv.categoria =="extensao" && ext<330) || (atv.categoria !== "extensao" && outras<LIMITE_OUTRAS)){
-      if (!pref.length) {
-        msgs.push(`• ${nome} <br> Esta atividade requer horário <span class="tag">${flexibilidadeLabels[atv.flexibilidade]}</span> que não está nas suas preferências.`);
-      } else {
-        msgs.push(`• ${nome} `)
-      }
-    } 
-  })
-  atvss=atividades.toSorted((a, b) => a.score < b.score)
-  console.log(atvss.slice(0,5))
+      atv = atvss.filter(r => r.tipo === k)
+      atv=atv[0]
+      atv.score+=10
+    })
+    atvss.sort((a, b) => (a.score < b.score))
+    atvss.filter(filterAtv)
+    console.log(atvss)
+    for(let i =0; i<5; i++){
+      atv=atvss[i]
+      pref = flexPrefs.filter(r => r == atv.flexibilidade)
+      nome = atv.nome
+      if ((atv.categoria =="extensao" && ext<330) || (atv.categoria !== "extensao" && outras<LIMITE_OUTRAS)){
+        if (!pref.length) {
+          msgs.push(`• ${nome} <br> Esta atividade requer horário <span class="tag">${flexibilidadeLabels[atv.flexibilidade]}</span> que não está nas suas preferências.<br> `)
+        } else {
+          msgs.push(`• ${nome} <br> `)
+        }
+      } 
+    }
+    msgs.join("")
   }
   wrap.style.display = msgs.length ? 'block' : 'none';
   list.innerHTML = msgs.map(m => `<div class="suggestion-item">${m}</div>`).join('');
