@@ -124,73 +124,73 @@ const flexibilidadeLabels = {
 // valorFixo: se existir, horas obrigatórias por ocorrência
 const atividades = [
   /* ======= EXTENSÃO ======= */
-  { nome: "ACCS", categoria: "extensao", maxHoras: 100, valorFixo: null, perfil: "Social", comprovacao: "Comprovante de carga horária cumprida", flexibilidade: "meio-flexivel" },
-  { nome: "Estágio supervisionado", tipo:"estagio", categoria: "extensao", maxHoras: 100, valorFixo: 50, perfil: "Mercado", comprovacao: "Plano e relatório assinados", flexibilidade: "rigido" },
-  { nome: "Programa de Extensão", categoria: "extensao", maxHoras: 120, valorFixo: 60, perfil: "Social", comprovacao: "Comprovante SIATEX-UFBA", flexibilidade: "meio-flexivel" },
-  { nome: "Projeto de Extensão", categoria: "extensao", maxHoras: 120, valorFixo: 60, perfil: "Social", comprovacao: "Comprovante SIATEX-UFBA", flexibilidade: "meio-flexivel" },
-  { nome: "Curso de Extensão", categoria: "extensao", maxHoras: 120, valorFixo: null, perfil: "Acadêmico", comprovacao: "Certificado ou SIATEX", flexibilidade: "flexivel" },
-  { nome: "Atividade de Campo", categoria: "extensao", maxHoras: 100, valorFixo: null, perfil: "Social", comprovacao: "Certificado atividade de campo", flexibilidade: "rigido" },
-  { nome: "Evento Acadêmico-Científico (participação)", tipo: "eventoAcademico", categoria: "extensao", categoriasAlternativas:["pesquisa"], maxHoras: 100, valorFixo: 50, perfil: "Acadêmico", comprovacao: "Comprovante de participação", flexibilidade: "rigido" },
-  { nome: "Publicação / Produto Acadêmico", categoria: "extensao", categoriasAlternativas:["pesquisa"], maxHoras: 100, valorFixo: 50, perfil: "Acadêmico", comprovacao: "Comprovante da publicação", flexibilidade: "flexivel" },
-  { nome: "Organização de Evento", tipo:"organizacaoEvento", categoria: "extensao", maxHoras: 100, valorFixo: 50, perfil: "Acadêmico", comprovacao: "Comissão organizadora", flexibilidade: "rigido" },
-  { nome: "Prestação de Serviço à Comunidade", categoria: "extensao", maxHoras: 100, valorFixo: 50, perfil: "Social", comprovacao: "Comprovante de serviço", flexibilidade: "meio-flexivel" },
-  { nome: "Liga Acadêmica", categoria: "extensao", maxHoras: 120, valorFixo: 60, perfil: "Acadêmico", comprovacao: "Certificado de participação", flexibilidade: "meio-flexivel" },
-  { nome: "Empresa Júnior", tipo:"empresaJunior", categoria: "extensao", maxHoras: 120, valorFixo: 60, perfil: "Mercado", comprovacao: "Certificado EJ", flexibilidade: "meio-flexivel" },
-  { nome: "Movimento Estudantil / Coletivos", categoria: "extensao", maxHoras: 120, valorFixo: 60, perfil: "Social", comprovacao: "Certificado de gestão", flexibilidade: "meio-flexivel" },
-  { nome: "Open-source externo (localização / issues)", categoria: "extensao", maxHoras: 30, valorFixo: 10, perfil: "Mercado", comprovacao: "Aceite no issue tracker", flexibilidade: "flexivel" },
-  //{ nome: "Voluntariado educacional tecnológico", categoria: "extensao", maxHoras: 20, valorFixo: "50% da carga do certificado", perfil: "Social", comprovacao: "Certificado ≥10h", flexibilidade: "meio-flexivel" },
+  { nome: "ACCS", categoria: "extensao", maxHoras: 100, valorFixo: null, perfil: "Social", comprovacao: "Comprovante de carga horária cumprida", flexibilidade: "meio-flexivel", score: 0 },
+  { nome: "Estágio supervisionado", tipo:"estagio", categoria: "extensao", maxHoras: 100, valorFixo: 50, perfil: "Mercado", comprovacao: "Plano e relatório assinados", flexibilidade: "rigido", score: 0 },
+  { nome: "Programa de Extensão", categoria: "extensao", maxHoras: 120, valorFixo: 60, perfil: "Social", comprovacao: "Comprovante SIATEX-UFBA", flexibilidade: "meio-flexivel", score: 0 },
+  { nome: "Projeto de Extensão", categoria: "extensao", maxHoras: 120, valorFixo: 60, perfil: "Social", comprovacao: "Comprovante SIATEX-UFBA", flexibilidade: "meio-flexivel", score: 0 },
+  { nome: "Curso de Extensão", categoria: "extensao", maxHoras: 120, valorFixo: null, perfil: "Acadêmico", comprovacao: "Certificado ou SIATEX", flexibilidade: "flexivel", score: 0 },
+  { nome: "Atividade de Campo", categoria: "extensao", maxHoras: 100, valorFixo: null, perfil: "Social", comprovacao: "Certificado atividade de campo", flexibilidade: "rigido", score: 0 },
+  { nome: "Evento Acadêmico-Científico (participação)", tipo: "eventoAcademico", categoria: "extensao", categoriasAlternativas:["pesquisa"], maxHoras: 100, valorFixo: 50, perfil: "Acadêmico", comprovacao: "Comprovante de participação", flexibilidade: "rigido", score: 0 },
+  { nome: "Publicação / Produto Acadêmico", categoria: "extensao", categoriasAlternativas:["pesquisa"], maxHoras: 100, valorFixo: 50, perfil: "Acadêmico", comprovacao: "Comprovante da publicação", flexibilidade: "flexivel", score: 0 },
+  { nome: "Organização de Evento", tipo:"organizacaoEvento", categoria: "extensao", maxHoras: 100, valorFixo: 50, perfil: "Acadêmico", comprovacao: "Comissão organizadora", flexibilidade: "rigido", score: 0 },
+  { nome: "Prestação de Serviço à Comunidade", categoria: "extensao", maxHoras: 100, valorFixo: 50, perfil: "Social", comprovacao: "Comprovante de serviço", flexibilidade: "meio-flexivel", score: 0 },
+  { nome: "Liga Acadêmica", categoria: "extensao", maxHoras: 120, valorFixo: 60, perfil: "Acadêmico", comprovacao: "Certificado de participação", flexibilidade: "meio-flexivel", score: 0 },
+  { nome: "Empresa Júnior", tipo:"empresaJunior", categoria: "extensao", maxHoras: 120, valorFixo: 60, perfil: "Mercado", comprovacao: "Certificado EJ", flexibilidade: "meio-flexivel", score: 0 },
+  { nome: "Movimento Estudantil / Coletivos", categoria: "extensao", maxHoras: 120, valorFixo: 60, perfil: "Social", comprovacao: "Certificado de gestão", flexibilidade: "meio-flexivel", score: 0 },
+  { nome: "Open-source externo (localização / issues)", categoria: "extensao", maxHoras: 30, valorFixo: 10, perfil: "Mercado", comprovacao: "Aceite no issue tracker", flexibilidade: "flexivel", score: 0 },
+  //{ nome: "Voluntariado educacional tecnológico", categoria: "extensao", maxHoras: 20, valorFixo: "50% da carga do certificado", perfil: "Social", comprovacao: "Certificado ≥10h", flexibilidade: "meio-flexivel", score: 0 },
 
 
   /* ======= OUTRAS – ENSINO ======= */
-  { nome: "Monitoria", tipo: "monitoria", categoria: "ensino", maxHoras: 30, valorFixo: 20, perfil: "Acadêmico", comprovacao: "Certificado (≥20h)", flexibilidade: "rigido" },
-  { nome: "PET / GET (Educação Tutorial)", tipo:"pet", categoria: "ensino", maxHoras: 30, valorFixo: 20, perfil: "Acadêmico", comprovacao: "Certificado (≥20h)", flexibilidade: "meio-flexivel" },
-  { nome: "Grupo de Estudo", tipo:"grupoEstudo", categoria: "ensino", maxHoras: 30, valorFixo: 10, perfil: "Acadêmico", comprovacao: "Certificado (≥20h)", flexibilidade: "meio-flexivel" },
+  { nome: "Monitoria", tipo: "monitoria", categoria: "ensino", maxHoras: 30, valorFixo: 20, perfil: "Acadêmico", comprovacao: "Certificado (≥20h)", flexibilidade: "rigido", score: 0 },
+  { nome: "PET / GET (Educação Tutorial)", tipo:"pet", categoria: "ensino", maxHoras: 30, valorFixo: 20, perfil: "Acadêmico", comprovacao: "Certificado (≥20h)", flexibilidade: "meio-flexivel", score: 0 },
+  { nome: "Grupo de Estudo", tipo:"grupoEstudo", categoria: "ensino", maxHoras: 30, valorFixo: 10, perfil: "Acadêmico", comprovacao: "Certificado (≥20h)", flexibilidade: "meio-flexivel", score: 0 },
 
   /* ======= OUTRAS – PESQUISA ======= */
-  { nome: "Iniciação Científica", tipo:"iniciacaoCientifica", categoria: "pesquisa", maxHoras: 30, valorFixo: 20, perfil: "Acadêmico", comprovacao: "Certificado (≥20h)", flexibilidade: "meio-flexivel" },
-  { nome: "Estudo Secundário (Revisão/Mapeamento)", categoria: "pesquisa", maxHoras: 30, valorFixo: 10, perfil: "Acadêmico", comprovacao: "Declaração orientador", flexibilidade: "flexivel" },
-  { nome: "Apresentação de Trabalho em Evento", categoria: "pesquisa", categoriasAlternativas:["extensao"], maxHoras: 30, valorFixo: 10, perfil: "Acadêmico", comprovacao: "Comprovante de apresentação", flexibilidade: "rigido" },
-  { nome: "Artigo em Periódico", tipo:"artigoPeriodico", categoria: "pesquisa", categoriasAlternativas:["extensao"], maxHoras: 30, valorFixo: 30, perfil: "Acadêmico", comprovacao: "Cópia da publicação", flexibilidade: "flexivel" },
-  { nome: "Artigo em Conferência N/I", tipo:"artigoConferencia", categoria: "pesquisa", categoriasAlternativas:["extensao"], maxHoras: 30, valorFixo: 20, perfil: "Acadêmico", comprovacao: "Cópia dos anais", flexibilidade: "flexivel" },
-  { nome: "Artigo em Conferência Regional", categoria: "pesquisa", categoriasAlternativas:["extensao"], maxHoras: 30, valorFixo: 20, perfil: "Acadêmico", comprovacao: "Cópia dos anais", flexibilidade: "flexivel" },
-  { nome: "Premiação de Pesquisa", categoria: "pesquisa", maxHoras: 30, valorFixo: 20, perfil: "Acadêmico", comprovacao: "Documento de premiação", flexibilidade: "rigido" },
+  { nome: "Iniciação Científica", tipo:"iniciacaoCientifica", categoria: "pesquisa", maxHoras: 30, valorFixo: 20, perfil: "Acadêmico", comprovacao: "Certificado (≥20h)", flexibilidade: "meio-flexivel", score: 0 },
+  { nome: "Estudo Secundário (Revisão/Mapeamento)", categoria: "pesquisa", maxHoras: 30, valorFixo: 10, perfil: "Acadêmico", comprovacao: "Declaração orientador", flexibilidade: "flexivel", score: 0 },
+  { nome: "Apresentação de Trabalho em Evento", categoria: "pesquisa", categoriasAlternativas:["extensao"], maxHoras: 30, valorFixo: 10, perfil: "Acadêmico", comprovacao: "Comprovante de apresentação", flexibilidade: "rigido", score: 0 },
+  { nome: "Artigo em Periódico", tipo:"artigoPeriodico", categoria: "pesquisa", categoriasAlternativas:["extensao"], maxHoras: 30, valorFixo: 30, perfil: "Acadêmico", comprovacao: "Cópia da publicação", flexibilidade: "flexivel", score: 0 },
+  { nome: "Artigo em Conferência N/I", tipo:"artigoConferencia", categoria: "pesquisa", categoriasAlternativas:["extensao"], maxHoras: 30, valorFixo: 20, perfil: "Acadêmico", comprovacao: "Cópia dos anais", flexibilidade: "flexivel", score: 0 },
+  { nome: "Artigo em Conferência Regional", categoria: "pesquisa", categoriasAlternativas:["extensao"], maxHoras: 30, valorFixo: 20, perfil: "Acadêmico", comprovacao: "Cópia dos anais", flexibilidade: "flexivel", score: 0 },
+  { nome: "Premiação de Pesquisa", categoria: "pesquisa", maxHoras: 30, valorFixo: 20, perfil: "Acadêmico", comprovacao: "Documento de premiação", flexibilidade: "rigido", score: 0 },
 
   /* ======= OUTRAS – VIVÊNCIA PROFISSIONAL ======= */
-  { nome: "Gestão de Redes Acadêmicas", categoria: "vivencia", maxHoras: 30, valorFixo: 20, perfil: "Mercado", comprovacao: "Relatório professor", flexibilidade: "meio-flexivel" },
-  { nome: "Open-source STI/UFBA", categoria: "vivencia", maxHoras: 30, valorFixo: 10, perfil: "Mercado", comprovacao: "Declaração orientador", flexibilidade: "flexivel" },
-  { nome: "Certificação Técnica", tipo:"certificacao", categoria: "vivencia", maxHoras: 30, valorFixo: 30, perfil: "Mercado", comprovacao: "Certificado oficial", flexibilidade: "flexivel" },
-  //{ nome: "Curso de Capacitação Profissional", categoria: "vivencia", maxHoras: 30, valorFixo: "50% da carga do curso", perfil: "Mercado", comprovacao: "Certificado ou declaração", flexibilidade: "flexivel" },
-  { nome: "Competição Acadêmica (GRUPRO)", categoria: "vivencia", maxHoras: 60, valorFixo: 20, perfil: "Mercado", comprovacao: "Certificado de participação", flexibilidade: "rigido" },
-  { nome: "Participação em Olimpíada / Maratona de Computação", categoria: "vivencia", maxHoras: 60, valorFixo: 20, perfil: "Mercado", comprovacao: "Certificado de participação", flexibilidade: "rigido" },
+  { nome: "Gestão de Redes Acadêmicas", categoria: "vivencia", maxHoras: 30, valorFixo: 20, perfil: "Mercado", comprovacao: "Relatório professor", flexibilidade: "meio-flexivel", score: 0 },
+  { nome: "Open-source STI/UFBA", categoria: "vivencia", maxHoras: 30, valorFixo: 10, perfil: "Mercado", comprovacao: "Declaração orientador", flexibilidade: "flexivel", score: 0 },
+  { nome: "Certificação Técnica", tipo:"certificacao", categoria: "vivencia", maxHoras: 30, valorFixo: 30, perfil: "Mercado", comprovacao: "Certificado oficial", flexibilidade: "flexivel", score: 0 },
+  //{ nome: "Curso de Capacitação Profissional", categoria: "vivencia", maxHoras: 30, valorFixo: "50% da carga do curso", perfil: "Mercado", comprovacao: "Certificado ou declaração", flexibilidade: "flexivel", score: 0 },
+  { nome: "Competição Acadêmica (GRUPRO)", categoria: "vivencia", maxHoras: 60, valorFixo: 20, perfil: "Mercado", comprovacao: "Certificado de participação", flexibilidade: "rigido", score: 0 },
+  { nome: "Participação em Olimpíada / Maratona de Computação", categoria: "vivencia", maxHoras: 60, valorFixo: 20, perfil: "Mercado", comprovacao: "Certificado de participação", flexibilidade: "rigido", score: 0 },
 
   /* ======= OUTRAS – EVENTOS TÉCNICOS CIENTÍFICOS ======= */
-  { nome: "Congressos / Semanas / Workshops", tipo:"congresso", categoria: "eventos", maxHoras: 30, valorFixo: 10, perfil: "Acadêmico", comprovacao: "Certificado participação", flexibilidade: "rigido" },
-  { nome: "Associação em Sociedade Científica", categoria: "eventos", maxHoras: 10, valorFixo: 5, perfil: "Acadêmico", comprovacao: "Carteira de sócio", flexibilidade: "flexivel" },
-  { nome: "Premiação em Olimpíada/Maratona", categoria: "eventos", categoriasAlternativas:["vivencia"], maxHoras: 30, valorFixo: 10, perfil: "Acadêmico", comprovacao: "Certificado de premiação", flexibilidade: "rigido" },
+  { nome: "Congressos / Semanas / Workshops", tipo:"congresso", categoria: "eventos", maxHoras: 30, valorFixo: 10, perfil: "Acadêmico", comprovacao: "Certificado participação", flexibilidade: "rigido", score: 0 },
+  { nome: "Associação em Sociedade Científica", categoria: "eventos", maxHoras: 10, valorFixo: 5, perfil: "Acadêmico", comprovacao: "Carteira de sócio", flexibilidade: "flexivel", score: 0 },
+  { nome: "Premiação em Olimpíada/Maratona", categoria: "eventos", categoriasAlternativas:["vivencia"], maxHoras: 30, valorFixo: 10, perfil: "Acadêmico", comprovacao: "Certificado de premiação", flexibilidade: "rigido", score: 0 },
 
   /* ======= OUTRAS – INTERVENÇÃO ORGANIZACIONAL ======= */
-  { nome: "Comissão Organizadora de Evento", categoria: "organizacional", categoriasAlternativas:["extensao"], maxHoras: 30, valorFixo: 10, perfil: "Acadêmico", comprovacao: "Certificado/declaração", flexibilidade: "rigido" },
-  { nome: "Ministrante de Curso/Oficina", categoria: "organizacional", categoriasAlternativas:["extensao"], maxHoras: 30, valorFixo: 15, perfil: "Acadêmico", comprovacao: "Certificado de ministrante", flexibilidade: "rigido" },
-  { nome: "Coordenação de Congresso/Simpósio", categoria: "organizacional", categoriasAlternativas:["extensao"], maxHoras: 30, valorFixo: 20, perfil: "Acadêmico", comprovacao: "Certificado", flexibilidade: "rigido" },
-  { nome: "Desenvolvimento de Solução Tecnológica", categoria: "organizacional", maxHoras: 30, valorFixo: 20, perfil: "Mercado", comprovacao: "Registro/autoria", flexibilidade: "flexivel" },
-  { nome: "Atuação Administrativa no Instituto", categoria: "organizacional", maxHoras: 30, valorFixo: 20, perfil: "Acadêmico", comprovacao: "Relatório professor", flexibilidade: "rigido" },
+  { nome: "Comissão Organizadora de Evento", categoria: "organizacional", categoriasAlternativas:["extensao"], maxHoras: 30, valorFixo: 10, perfil: "Acadêmico", comprovacao: "Certificado/declaração", flexibilidade: "rigido", score: 0 },
+  { nome: "Ministrante de Curso/Oficina", categoria: "organizacional", categoriasAlternativas:["extensao"], maxHoras: 30, valorFixo: 15, perfil: "Acadêmico", comprovacao: "Certificado de ministrante", flexibilidade: "rigido", score: 0 },
+  { nome: "Coordenação de Congresso/Simpósio", categoria: "organizacional", categoriasAlternativas:["extensao"], maxHoras: 30, valorFixo: 20, perfil: "Acadêmico", comprovacao: "Certificado", flexibilidade: "rigido", score: 0 },
+  { nome: "Desenvolvimento de Solução Tecnológica", categoria: "organizacional", maxHoras: 30, valorFixo: 20, perfil: "Mercado", comprovacao: "Registro/autoria", flexibilidade: "flexivel", score: 0 },
+  { nome: "Atuação Administrativa no Instituto", categoria: "organizacional", maxHoras: 30, valorFixo: 20, perfil: "Acadêmico", comprovacao: "Relatório professor", flexibilidade: "rigido", score: 0 },
 
   /* ======= OUTRAS – REPRESENTAÇÃO ESTUDANTIL ======= */
-  { nome: "Mandato em CA/DA/DCE", categoria: "representacao", maxHoras: 30, valorFixo: 30, perfil: "Social", comprovacao: "Ata de posse + declaração", flexibilidade: "meio-flexivel" },
-  { nome: "Representação em Colegiado/Departamento", tipo:"representacao", categoria: "representacao", maxHoras: 30, valorFixo: 30, perfil: "Social", comprovacao: "Ata de eleição + declaração", flexibilidade: "meio-flexivel" },
-  { nome: "Comissão Eleitoral Estudantil", categoria: "representacao", maxHoras: 10, valorFixo: 5, perfil: "Social", comprovacao: "Ata de apuração", flexibilidade: "rigido" },
-  { nome: "Representação em Sociedade Científica", categoria: "representacao", maxHoras: 30, valorFixo: 30, perfil: "Acadêmico", comprovacao: "Declaração da sociedade", flexibilidade: "flexivel" },
+  { nome: "Mandato em CA/DA/DCE", categoria: "representacao", maxHoras: 30, valorFixo: 30, perfil: "Social", comprovacao: "Ata de posse + declaração", flexibilidade: "meio-flexivel", score: 0 },
+  { nome: "Representação em Colegiado/Departamento", tipo:"representacao", categoria: "representacao", maxHoras: 30, valorFixo: 30, perfil: "Social", comprovacao: "Ata de eleição + declaração", flexibilidade: "meio-flexivel", score: 0 },
+  { nome: "Comissão Eleitoral Estudantil", categoria: "representacao", maxHoras: 10, valorFixo: 5, perfil: "Social", comprovacao: "Ata de apuração", flexibilidade: "rigido", score: 0 },
+  { nome: "Representação em Sociedade Científica", categoria: "representacao", maxHoras: 30, valorFixo: 30, perfil: "Acadêmico", comprovacao: "Declaração da sociedade", flexibilidade: "flexivel", score: 0 },
 
   /* ======= OUTRAS – FORMAÇÃO INTERDISCIPLINAR ======= */
-  { nome: "Curso de Idiomas (≥ Intermediário)", categoria: "interdisciplinar", maxHoras: 30, valorFixo: 30, perfil: "Geral", comprovacao: "Certificado com carga", flexibilidade: "flexivel" },
-  { nome: "Certificação de Proficiência", categoria: "interdisciplinar", maxHoras: 30, valorFixo: 20, perfil: "Acadêmico", comprovacao: "Certificado oficial", flexibilidade: "flexivel" },
-  { nome: "Disciplina Optativa Externa", categoria: "interdisciplinar", maxHoras: 30, valorFixo: 30, perfil: "Acadêmico", comprovacao: "Histórico escolar", flexibilidade: "rigido" },
+  { nome: "Curso de Idiomas (≥ Intermediário)", categoria: "interdisciplinar", maxHoras: 30, valorFixo: 30, perfil: "Geral", comprovacao: "Certificado com carga", flexibilidade: "flexivel", score: 0 },
+  { nome: "Certificação de Proficiência", categoria: "interdisciplinar", maxHoras: 30, valorFixo: 20, perfil: "Acadêmico", comprovacao: "Certificado oficial", flexibilidade: "flexivel", score: 0 },
+  { nome: "Disciplina Optativa Externa", categoria: "interdisciplinar", maxHoras: 30, valorFixo: 30, perfil: "Acadêmico", comprovacao: "Histórico escolar", flexibilidade: "rigido", score: 0 },
 
   /* ======= OUTRAS – OUTROS ======= */
-  { nome: "Atividade Física Orientada", categoria: "outros", maxHoras: 20, valorFixo: 5, perfil: "Geral", comprovacao: "Declaração da academia", flexibilidade: "meio-flexivel" },
-  { nome: "Atividade Cultural", categoria: "outros", maxHoras: 20, valorFixo: 10, perfil: "Geral", comprovacao: "Declaração da instituição", flexibilidade: "flexivel" },
-  { nome: "Doação de Sangue", categoria: "outros", maxHoras: 15, valorFixo: 5, perfil: "Geral", comprovacao: "Atestado de doação", flexibilidade: "flexivel" },
-  { nome: "Mesário em Eleição Oficial", categoria: "outros", maxHoras: 10, valorFixo: 5, perfil: "Social", comprovacao: "Declaração Justiça Eleitoral", flexibilidade: "rigido" }
+  { nome: "Atividade Física Orientada", categoria: "outros", maxHoras: 20, valorFixo: 5, perfil: "Geral", comprovacao: "Declaração da academia", flexibilidade: "meio-flexivel", score: 0 },
+  { nome: "Atividade Cultural", categoria: "outros", maxHoras: 20, valorFixo: 10, perfil: "Geral", comprovacao: "Declaração da instituição", flexibilidade: "flexivel", score: 0 },
+  { nome: "Doação de Sangue", categoria: "outros", maxHoras: 15, valorFixo: 5, perfil: "Geral", comprovacao: "Atestado de doação", flexibilidade: "flexivel", score: 0 },
+  { nome: "Mesário em Eleição Oficial", categoria: "outros", maxHoras: 10, valorFixo: 5, perfil: "Social", comprovacao: "Declaração Justiça Eleitoral", flexibilidade: "rigido", score: 0 }
 ];
 
 // Limites por categoria 1 & 2 (resolução UFBA)
@@ -234,7 +234,11 @@ function summariseData() {
 // 3.2  CLASSIFICAÇÃO – dado um id de atividade, obter seu perfil & flexibilidade
 function classifyActivity(key) {
   const a = atividades[key];
-  return { perfil: a.perfil, flexibilidade: a.flexibilidade };
+  atividades.forEach(r => {
+    if (r.categoria==a.categoria) r.score+=2;
+    if (flexPrefs.includes(r.perfil)) r.score+=5;
+    if (flexPrefs.includes(r.flexibilidade)) r.score+=4;
+  });
 }
 
 // 3.3  ASSOCIAÇÃO – gera lista de atividades relacionadas que ainda cabem
@@ -242,6 +246,7 @@ function associateSuggestions() {
   const feitas = registros.map(r => r.tipo);
   const relacionadas = new Set();
   feitas.forEach(t => {
+    classifyActivity(t);
     tipo = atividades[t].tipo;
     if (regrasCombinacao[tipo]) regrasCombinacao[tipo].forEach(r => relacionadas.add(r));
   });
@@ -397,7 +402,6 @@ function updateSuggestions() {
 
   // Sugestões associativas
   const assoc = associateSuggestions();
-  console.log(assoc);
   if (assoc.length) { 
     msgs.push('<strong>Sugestões associadas:</strong><br>')
     assoc.map(k => {
@@ -407,12 +411,14 @@ function updateSuggestions() {
     nome = atv.nome
     if ((atv.categoria =="extensao" && ext<330) || (atv.categoria !== "extensao" && outras<LIMITE_OUTRAS)){
       if (!pref.length) {
-        msgs.push(`• ${nome} <span class="tag">${flexibilidadeLabels[atv.flexibilidade]}</span> <br>    Esta atividade requer horário <span class="tag">${flexibilidadeLabels[atv.flexibilidade]}</span> que não está nas suas preferências.`);
+        msgs.push(`• ${nome} <br> Esta atividade requer horário <span class="tag">${flexibilidadeLabels[atv.flexibilidade]}</span> que não está nas suas preferências.`);
       } else {
-        msgs.push(`• ${nome} <span class="tag">${flexibilidadeLabels[atv.flexibilidade]}</span> <br>`)
+        msgs.push(`• ${nome} `)
       }
-    }
+    } 
   })
+  atvss=atividades.toSorted((a, b) => a.score < b.score)
+  console.log(atvss.slice(0,5))
   }
   wrap.style.display = msgs.length ? 'block' : 'none';
   list.innerHTML = msgs.map(m => `<div class="suggestion-item">${m}</div>`).join('');
